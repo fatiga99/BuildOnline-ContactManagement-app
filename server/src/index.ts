@@ -23,18 +23,18 @@ const pool = mysql.createPool({
 
   export default pool;
 
-  app.get('/api/test-db', async (req, res) => {
-    try {
-      const [rows] = await pool.query<RowDataPacket[]>('SELECT 1 + 1 AS solution');
-      res.json({ message: 'Database connection successful', solution: rows[0].solution });
-    } catch (error) {
-      if (error instanceof Error) {
-        res.status(500).json({ error: 'Database connection failed', details: error.message });
-      } else {
-        res.status(500).json({ error: 'Unknown error occurred' });
-      }
-    }
-  });
+  // app.get('/api/test-db', async (req, res) => {
+  //   try {
+  //     const [rows] = await pool.query<RowDataPacket[]>('SELECT 1 + 1 AS solution');
+  //     res.json({ message: 'Database connection successful', solution: rows[0].solution });
+  //   } catch (error) {
+  //     if (error instanceof Error) {
+  //       res.status(500).json({ error: 'Database connection failed', details: error.message });
+  //     } else {
+  //       res.status(500).json({ error: 'Unknown error occurred' });
+  //     }
+  //   }
+  // });
   
   
 
