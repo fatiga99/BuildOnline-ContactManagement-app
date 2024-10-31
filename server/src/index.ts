@@ -2,11 +2,12 @@ import express, { Application, Request, Response } from 'express';
 // import cors from 'cors';
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
+import { RowDataPacket } from 'mysql2';
 
 dotenv.config();
 
 const app: Application = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 //db connection pool
 const pool = mysql.createPool({
@@ -21,6 +22,21 @@ const pool = mysql.createPool({
   });
 
   export default pool;
+
+  app.get('/api/test-db', async (req, res) => {
+    try {
+      const [rows] = await pool.query<RowDataPacket[]>('SELECT 1 + 1 AS solution');
+      res.json({ message: 'Database connection successful', solution: rows[0].solution });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).json({ error: 'Database connection failed', details: error.message });
+      } else {
+        res.status(500).json({ error: 'Unknown error occurred' });
+      }
+    }
+  });
+  
+  
 
 // Middleware
 // app.use(cors());
