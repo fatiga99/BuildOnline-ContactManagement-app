@@ -1,37 +1,53 @@
 import { FieldPacket, RowDataPacket } from "mysql2";
 import pool from "..";
-import { User } from "../models/user";
-
+import { User } from "../models/User";
 
 export class UserRepository {
 
-    public async getUserById(id: number): Promise<User | null>{
-        const [rows] = await pool.query<RowDataPacket[]>("SELECT * FROM USER WHERE id = ?", [id]);
+    public async getUserById(id: number): Promise<User | null> {
+        const [userRecords] = await pool.query<RowDataPacket[]>(
+            `SELECT * 
+             FROM user 
+             WHERE id = ?`, 
+            [id]
+        );
 
-        if(rows.length === 0){
+        if (userRecords.length === 0) {
             return null;
         }
 
-        const userRow = rows[0];
+        const userRow = userRecords[0];
         const newUser = new User(userRow.id, userRow.email, userRow.password);
         return newUser;
     }
 
-    public async getUserByEmail(email: string): Promise<User | null>{
-        const [rows] = await pool.query<RowDataPacket[]>("SELECT * FROM USER WHERE email = ?", [email]);
+    public async getUserByEmail(email: string): Promise<User | null> {
+        const [userRecords] = await pool.query<RowDataPacket[]>(
+            `SELECT * 
+             FROM user 
+             WHERE email = ?`, 
+            [email]
+        );
 
-        if(rows.length === 0){
+        if (userRecords.length === 0) {
             return null;
         }
 
-        const userRow = rows[0];
+        const userRow = userRecords[0];
         const newUser = new User(userRow.id, userRow.email, userRow.password);
         return newUser;
     }
 
-    public async createUser(email: string, password: string): Promise<User>{
-        const [insertUserResult] = await pool.query<RowDataPacket[]>("INSERT INTO user (email, password) VALUES (?,?)", [email, password]);
-        const insertId = (insertUserResult as any).insertId;
+    public async createUser(email: string, password: string): Promise<User> {
+        const query = `
+            INSERT INTO user (email, password) 
+            VALUES (?, ?)
+        `;
+        const values = [email, password];
+
+        const [insertUserResult] = await pool.query<RowDataPacket[]>(query, values);
+        const insertId = (insertUserResult as RowDataPacket).insertId;
+
         const newUser = new User(insertId, email, password);
         return newUser;
     }
