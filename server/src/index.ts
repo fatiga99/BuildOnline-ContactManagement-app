@@ -42,14 +42,13 @@ const pool = mysql.createPool({
 // app.use(cors());
 // app.use(express.json());
 
-// // Rutas
+
 // // import userRoutes from './src/routes/userRoutes';
 // // import contactRoutes from './src/routes/contactRoutes';
 
 // app.use('/api/users', userRoutes);
 // app.use('/api/contacts', contactRoutes);
 
-// Inicio del servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
