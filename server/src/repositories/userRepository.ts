@@ -1,7 +1,7 @@
 import { FieldPacket, RowDataPacket } from "mysql2";
 import {IUserRepository} from "../interfaces/IUserRepository";
 import pool from "..";
-import { User } from "../models/User";
+import { User } from "../models/user";
 
 export class UserRepository implements IUserRepository  {
 
