@@ -1,6 +1,6 @@
 import { RowDataPacket } from "mysql2";
 import pool from "..";
-import { Contact } from "../models/Contact";
+import { Contact } from "../models/contact";
 import { IContactRepository } from "../interfaces/IContactRepository";
 
 export class ContactRepository implements IContactRepository {

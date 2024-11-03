@@ -1,4 +1,4 @@
-import { Contact } from "../models/Contact";
+import { Contact } from "../models/contact";
 
 export interface IContactRepository {
     getContactsByUserId(userId: number): Promise<Contact[]>;
