@@ -1,6 +1,6 @@
 import { RowDataPacket } from "mysql2";
 import pool from "..";
-import { Contact } from "../models/contact";
+import { Contact } from "../models/Contact";
 
 export class ContactRepository {
 
