@@ -1,8 +1,9 @@
 import { RowDataPacket } from "mysql2";
 import pool from "..";
 import { Contact } from "../models/Contact";
+import { IContactRepository } from "../interfaces/IContactRepository";
 
-export class ContactRepository {
+export class ContactRepository implements IContactRepository {
 
     public async getContactsByUserId(userId: number): Promise<Contact[]> {
         const [contactRecords] = await pool.query<RowDataPacket[]>(

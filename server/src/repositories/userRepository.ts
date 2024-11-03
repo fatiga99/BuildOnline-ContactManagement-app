@@ -1,8 +1,9 @@
 import { FieldPacket, RowDataPacket } from "mysql2";
+import {IUserRepository} from "../interfaces/IUserRepository";
 import pool from "..";
 import { User } from "../models/User";
 
-export class UserRepository {
+export class UserRepository implements IUserRepository  {
 
     public async getUserById(id: number): Promise<User | null> {
         const [userRecords] = await pool.query<RowDataPacket[]>(
