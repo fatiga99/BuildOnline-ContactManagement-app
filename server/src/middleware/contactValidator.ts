@@ -63,10 +63,12 @@ export const contactSchema = Joi.object({
     address: addressValidation()
 });
 
-export const validateContact = (req: Request, res: Response, next: NextFunction) => {
+export const validateContact = (req: Request, res: Response, next: NextFunction): void => {
     const { error } = contactSchema.validate(req.body, { abortEarly: false });
     if (error) {
-        return res.status(400).json({ errors: error.details.map(detail => detail.message) });
+        res.status(400).json({ errors: error.details.map(detail => detail.message) });
+        return;
     }
     next();
+    return;
 };

@@ -34,10 +34,12 @@ export const userSchema = Joi.object({
 });
 
 
-export const validateUser = (req: Request, res: Response, next: NextFunction) => {
+export const validateUser = (req: Request, res: Response, next: NextFunction): void => {
     const { error } = userSchema.validate(req.body, { abortEarly: false });
     if (error) {
-        return res.status(400).json({ errors: error.details.map(detail => detail.message) });
+        res.status(400).json({ errors: error.details.map(detail => detail.message) });
+        return;
     }
     next();
+    return;
 };
