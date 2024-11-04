@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
@@ -7,6 +7,7 @@ import { RowDataPacket } from 'mysql2';
 import userRoutes from './routes/contactRoutes';
 import contactRoutes from './routes/userRoutes';
 import authRouter from './routes/authRoutes';
+import { CustomError } from './utils/customError';
 
 dotenv.config();
 
@@ -40,7 +41,12 @@ const pool = mysql.createPool({
   //   }
   // });
   
-  
+//Custom Error
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  const status = err instanceof CustomError ? err.status : 500;
+  const message = err.message || 'Internal Server Error';
+  res.status(status).json({ message });
+});
 
 //Middleware
 app.use(cors());

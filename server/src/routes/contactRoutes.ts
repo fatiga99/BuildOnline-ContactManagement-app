@@ -1,9 +1,12 @@
 import express from 'express';
-import { ContactController } from '../controllers/ContactController';
+import { ContactController } from '../controllers/contactController';
+import { ContactRepository } from '../repositories/contactRepository';
 import { authMiddleware } from '../middleware/authMiddleware';
 import { validateContact } from '../middleware/contactValidator';
 
 const contactRouter = express.Router();
+const contactRepository = new ContactRepository();
+
 
 contactRouter.get('/contacts', authMiddleware, ContactController.getContacts);
 
