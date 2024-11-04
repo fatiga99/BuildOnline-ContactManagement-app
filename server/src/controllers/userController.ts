@@ -1,53 +1,34 @@
 import { NextFunction, Request, Response } from 'express';
-import { UserRepository } from '../repositories/userRepository';
-import { UserDTO } from '../interfaces/DTOs/userDTO';
-import {CreateUserDTO } from '../interfaces/DTOs/createUserDTO';
-import jwt from 'jsonwebtoken';
-import { IUserRepository } from '../interfaces/IUserRepository';
+import { UserService } from '../services/userService';
+import { CreateUserDTO } from '../interfaces/DTOs/createUserDTO';
 import { CustomError } from '../utils/customError';
 
-export class UserController{
-    private userRepository: IUserRepository;
+export class UserController {
+    private userService: UserService;
 
-    constructor(userRepository: IUserRepository) {
-        this.userRepository = userRepository;
+    constructor(userService: UserService) {
+        this.userService = userService;
     }
 
     public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { email, password } = req.body as CreateUserDTO;
-
-            const user = await this.userRepository.getUserByEmail(email);
-            if ( !user || user.password !== password) {
-                return next(new CustomError('Invalid credentials', 401));
-            }
-
-            const token = jwt.sign(
-                { id: user.id, email: user.email },
-                process.env.JWT_SECRET as string,
-                { expiresIn: '1h' }
-            );
-
+            const token = await this.userService.login(email, password);
             res.json({ token });
-        } 
-        catch (error) {
+        }
+         catch (error) {
             next(error);
         }
     }
 
     public async getUserInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const userId = req.user.id;
-            if ( !userId) {
+            const userId = req.user?.id;
+            if (!userId) {
                 return next(new CustomError('User ID is missing', 400));
             }
 
-            const user = await this.userRepository.getUserById(userId);
-            if ( !user) {
-                return next(new CustomError('User not found', 404));
-            }
-
-            const { password, ...userInfo } = user;
+            const userInfo = await this.userService.getUserInfo(userId);
             res.json(userInfo);
         } 
         catch (error) {
