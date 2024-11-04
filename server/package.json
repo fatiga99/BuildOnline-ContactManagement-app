@@ -25,6 +25,7 @@
     "uuid": "^11.0.2"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/joi": "^17.2.2",
     "@types/jsonwebtoken": "^9.0.7",

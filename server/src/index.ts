@@ -1,8 +1,12 @@
 import express, { Application, Request, Response } from 'express';
-// import cors from 'cors';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
 import { RowDataPacket } from 'mysql2';
+
+import userRoutes from './routes/contactRoutes';
+import contactRoutes from './routes/userRoutes';
+import authRouter from './routes/authRoutes';
 
 dotenv.config();
 
@@ -38,16 +42,15 @@ const pool = mysql.createPool({
   
   
 
-// Middleware
-// app.use(cors());
-// app.use(express.json());
+//Middleware
+app.use(cors());
+app.use(express.json());
 
+//Routes
+app.use('/api/login', authRouter);
+app.use('/api/user', userRoutes);
+app.use('/api/contacts', contactRoutes);
 
-// // import userRoutes from './src/routes/userRoutes';
-// // import contactRoutes from './src/routes/contactRoutes';
-
-// app.use('/api/users', userRoutes);
-// app.use('/api/contacts', contactRoutes);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
