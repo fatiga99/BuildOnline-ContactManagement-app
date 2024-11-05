@@ -6,7 +6,8 @@ import { ContactController } from '../controllers/contactController';
 
 const contactRouter = express.Router();
 const contactRepository = new ContactRepository();
-const contactController = new ContactController(contactRepository);
+const contactService = new ContactService(contactRepository)
+const contactController = new ContactController(contactService);
 
 
 contactRouter.get('/contacts', authMiddleware, contactController.getContacts.bind(contactController));

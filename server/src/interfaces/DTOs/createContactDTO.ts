@@ -4,4 +4,5 @@ export interface CreateContactDTO {
     phoneNumber: string;
     address: string;
     profilePicture: Buffer; 
+    userId: number;
 }

@@ -2,6 +2,7 @@ import { RowDataPacket } from "mysql2";
 import pool from "..";
 import { Contact } from "../models/contact";
 import { IContactRepository } from "../interfaces/IContactRepository";
+import { CreateContactDTO } from "../interfaces/DTOs/createContactDTO";
 
 export class ContactRepository implements IContactRepository {
 
@@ -24,7 +25,32 @@ export class ContactRepository implements IContactRepository {
         return contacts;
     }
 
-    public async createContact(contact: Contact): Promise<Contact> {
+    public async getContactById(contactId: number): Promise<Contact | null> {
+        const [contactRecords] = await pool.query<RowDataPacket[]>(
+            `SELECT * 
+             FROM contact 
+             WHERE id = ?`, 
+            [contactId]
+        );
+
+        if (contactRecords.length === 0) {
+            return null;
+        }
+
+        const contactRow = contactRecords[0];
+        return new Contact(
+            contactRow.id, 
+            contactRow.name, 
+            contactRow.email, 
+            contactRow.phoneNumber, 
+            contactRow.address, 
+            contactRow.profilePicture, 
+            contactRow.userId
+        );
+    }
+
+
+    public async createContact(contact: CreateContactDTO): Promise<Contact> {
         const query = `
             INSERT INTO contact (name, email, phoneNumber, address, profilePicture, userId) 
             VALUES (?, ?, ?, ?, ?, ?)
@@ -54,7 +80,7 @@ export class ContactRepository implements IContactRepository {
         return newContact;
     }
 
-    public async updateContact(contactId: number, contact: Contact): Promise<void> {
+    public async updateContact( contact: Contact): Promise<void> {
         const query = `
             UPDATE contact 
             SET name = ?, 
@@ -72,7 +98,7 @@ export class ContactRepository implements IContactRepository {
             contact.address, 
             contact.profilePicture,
             contact.userId,
-            contactId
+            contact.id
         ];
     
         await pool.query(query, values);
