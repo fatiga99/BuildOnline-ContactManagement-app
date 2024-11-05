@@ -9,6 +9,6 @@ const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
-authRouter.post('/login', validateUser, userController.login.bind(userController));
+authRouter.post('/', validateUser, userController.login.bind(userController));
 
 export default authRouter;

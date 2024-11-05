@@ -80,16 +80,15 @@ export class ContactRepository implements IContactRepository {
         return newContact;
     }
 
-    public async updateContact( contact: Contact): Promise<void> {
+    public async updateContact( contact: Contact): Promise<Contact | null> {
         const query = `
             UPDATE contact 
             SET name = ?, 
-                email = ?, 
-                phoneNumber = ?, 
-                address = ?, 
-                profilePicture = ?, 
-                userId = ?
-            WHERE id = ?
+            email = ?, 
+            phoneNumber = ?, 
+            address = ?, 
+            profilePicture = ?
+            WHERE id = ? AND userId = ? 
         `;
         const values = [
             contact.name, 
@@ -97,11 +96,17 @@ export class ContactRepository implements IContactRepository {
             contact.phoneNumber, 
             contact.address, 
             contact.profilePicture,
-            contact.userId,
-            contact.id
+            contact.id,
+            contact.userId
         ];
     
-        await pool.query(query, values);
+        const [result] = await pool.query(query, values) as any;
+
+        if (result.affectedRows === 0) {
+            return null;
+        }
+
+        return contact;
     }
 
     public async deleteContact(contactId: number): Promise<void> {

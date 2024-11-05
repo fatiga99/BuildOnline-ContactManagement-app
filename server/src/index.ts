@@ -4,15 +4,19 @@ import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
 import { RowDataPacket } from 'mysql2';
 
-import userRoutes from './routes/contactRoutes';
-import contactRoutes from './routes/userRoutes';
+import contactRoutes from './routes/contactRoutes';
+import userRoutes from './routes/userRoutes';
 import authRouter from './routes/authRoutes';
 import { CustomError } from './utils/customError';
+import { UserRepository } from './repositories/userRepository';
+
 
 dotenv.config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 5001;
+
+const userRepository = new UserRepository();
 
 //db connection pool
 const pool = mysql.createPool({
@@ -40,6 +44,22 @@ const pool = mysql.createPool({
   //     }
   //   }
   // });
+
+  async function createPreloadedUsers() {
+    const users = [
+        { email: 'testuser1@example.com', password: 'password123' },
+        { email: 'testuser2@example.com', password: 'password456' }
+    ];
+
+    for (const user of users) {
+        const existingUser = await userRepository.getUserByEmail(user.email);
+        if (!existingUser) {
+            await userRepository.createUser(user.email, user.password);
+        }
+    }
+}
+
+createPreloadedUsers();
   
 //Custom Error
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

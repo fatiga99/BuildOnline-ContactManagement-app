@@ -18,7 +18,8 @@ export class ContactController {
 
             const contacts = await this.contactService.getContactsByUserId(userId);
             res.json(contacts);
-        } catch (error) {
+        } 
+        catch (error) {
             next(error);
         }
     }
@@ -29,19 +30,32 @@ export class ContactController {
             if (!userId) return next(new CustomError('User ID is missing', 400));
 
             const contactData = req.body as CreateContactDTO;
+            contactData.userId = userId;
             const newContact = await this.contactService.createContact(contactData);
             res.status(201).json(newContact);
-        } catch (error) {
+        } 
+        catch (error) {
             next(error);
         }
     }
 
     public async updateContact(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            const contactId = parseInt(req.params.contactId); 
+            const userId = req.user?.id; 
+    
+            if (!userId) {
+                return next(new CustomError('User ID is missing', 400));
+            }
+
             const contactData = req.body as ContactDTO;
-            await this.contactService.updateContact(contactData);
-            res.status(204).end();
-        } catch (error) {
+            contactData.id = contactId;
+            contactData.userId = userId;
+
+            const updatedContact = await this.contactService.updateContact(contactData);
+            res.status(200).end(updatedContact);
+        } 
+        catch (error) {
             next(error);
         }
     }
@@ -51,7 +65,8 @@ export class ContactController {
             const contactId = parseInt(req.params.contactId);
             await this.contactService.deleteContact(contactId);
             res.status(204).end();
-        } catch (error) {
+        } 
+        catch (error) {
             next(error);
         }
     }

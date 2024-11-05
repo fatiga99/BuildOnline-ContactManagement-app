@@ -24,13 +24,20 @@ export class ContactService {
         return newContact;
     }
 
-    public async updateContact(contactData: ContactDTO): Promise<void> {
-        const contactId = contactData.id;
+    public async updateContact(contactData: ContactDTO): Promise<Contact> {
+        const { id: contactId, userId } = contactData; 
         const contact = await this.contactRepository.getContactById(contactId);
-        if (!contact) {
+
+        if (!contact || contact.userId !== userId) { 
             throw new CustomError('Contact not found', 404);
         }
-        await this.contactRepository.updateContact(contact);
+
+        const updatedContact = await this.contactRepository.updateContact(contact);
+        if (!updatedContact) {
+            throw new CustomError('Failed to update contact', 500);
+        }
+        
+        return updatedContact;
     }
 
     public async deleteContact(contactId: number): Promise<void> {
