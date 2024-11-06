@@ -28,23 +28,17 @@ export class ContactService {
         const { id: contactId, userId } = contactData; 
         const contact = await this.contactRepository.getContactById(contactId);
 
-        if (!contact || contact.userId !== userId) { 
-            throw new CustomError('Contact not found', 404);
+        if (contact.userId !== userId) { 
+            throw new CustomError('Unauthorized access to contact', 403);
         }
 
         const updatedContact = await this.contactRepository.updateContact(contact);
-        if (!updatedContact) {
-            throw new CustomError('Failed to update contact', 500);
-        }
         
         return updatedContact;
     }
 
     public async deleteContact(contactId: number): Promise<void> {
         const contact = await this.contactRepository.getContactById(contactId);
-        if (!contact) {
-            throw new CustomError('Contact not found', 404);
-        }
         await this.contactRepository.deleteContact(contactId);
     }
 }

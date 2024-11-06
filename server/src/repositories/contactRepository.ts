@@ -1,8 +1,9 @@
-import { RowDataPacket } from "mysql2";
+import { OkPacket, RowDataPacket } from "mysql2";
 import pool from "..";
 import { Contact } from "../models/contact";
 import { IContactRepository } from "../interfaces/IContactRepository";
 import { CreateContactDTO } from "../interfaces/DTOs/createContactDTO";
+import { CustomError } from "../utils/customError";
 
 export class ContactRepository implements IContactRepository {
 
@@ -25,7 +26,8 @@ export class ContactRepository implements IContactRepository {
         return contacts;
     }
 
-    public async getContactById(contactId: number): Promise<Contact | null> {
+    public async getContactById(contactId: number): Promise<Contact> {
+
         const [contactRecords] = await pool.query<RowDataPacket[]>(
             `SELECT * 
              FROM contact 
@@ -34,11 +36,11 @@ export class ContactRepository implements IContactRepository {
         );
 
         if (contactRecords.length === 0) {
-            return null;
+            throw new CustomError('Contact not found', 404);
         }
 
         const contactRow = contactRecords[0];
-        return new Contact(
+        const newContact = new Contact(
             contactRow.id, 
             contactRow.name, 
             contactRow.email, 
@@ -47,6 +49,8 @@ export class ContactRepository implements IContactRepository {
             contactRow.profilePicture, 
             contactRow.userId
         );
+
+        return newContact;
     }
 
 
@@ -80,7 +84,7 @@ export class ContactRepository implements IContactRepository {
         return newContact;
     }
 
-    public async updateContact( contact: Contact): Promise<Contact | null> {
+    public async updateContact( contact: Contact): Promise<Contact> {
         const query = `
             UPDATE contact 
             SET name = ?, 
@@ -100,10 +104,10 @@ export class ContactRepository implements IContactRepository {
             contact.userId
         ];
     
-        const [result] = await pool.query(query, values) as any;
+        const [updateContactResult] = await pool.query<OkPacket>(query, values);
 
-        if (result.affectedRows === 0) {
-            return null;
+        if (updateContactResult.affectedRows === 0) {
+            throw new CustomError('Contact not found or not updated', 404);
         }
 
         return contact;
