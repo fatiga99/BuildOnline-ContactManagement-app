@@ -2,10 +2,11 @@ import { FieldPacket, RowDataPacket } from "mysql2";
 import {IUserRepository} from "../interfaces/IUserRepository";
 import pool from "..";
 import { User } from "../models/user";
+import { CustomError } from "../utils/customError";
 
 export class UserRepository implements IUserRepository  {
 
-    public async getUserById(id: number): Promise<User | null> {
+    public async getUserById(id: number): Promise<User> {
         const [userRecords] = await pool.query<RowDataPacket[]>(
             `SELECT * 
              FROM user 
@@ -14,7 +15,7 @@ export class UserRepository implements IUserRepository  {
         );
 
         if (userRecords.length === 0) {
-            return null;
+            throw new CustomError('User not found', 404);
         }
 
         const userRow = userRecords[0];
@@ -22,7 +23,7 @@ export class UserRepository implements IUserRepository  {
         return newUser;
     }
 
-    public async getUserByEmail(email: string): Promise<User | null> {
+    public async getUserByEmail(email: string): Promise<User> {
         const [userRecords] = await pool.query<RowDataPacket[]>(
             `SELECT * 
              FROM user 
@@ -31,7 +32,7 @@ export class UserRepository implements IUserRepository  {
         );
 
         if (userRecords.length === 0) {
-            return null;
+            throw new CustomError('User not found', 404);
         }
 
         const userRow = userRecords[0];

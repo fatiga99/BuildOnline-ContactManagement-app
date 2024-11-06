@@ -13,7 +13,7 @@ export class UserService {
 
     public async login(email: string, password: string): Promise<string> {
         const user = await this.userRepository.getUserByEmail(email);
-        if (!user || user.password !== password) {
+        if (user.password !== password) {
             throw new CustomError('Invalid credentials', 401);
         }
 
@@ -28,10 +28,6 @@ export class UserService {
 
     public async getUserInfo(userId: number): Promise<Omit<UserDTO, 'password'>> {
         const user = await this.userRepository.getUserById(userId);
-        if (!user) {
-            throw new CustomError('User not found', 404);
-        }
-
         const { password, ...userInfo } = user;
         return userInfo; 
     }
