@@ -1,10 +1,13 @@
+"use client";
+
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../authSlice';
+import Cookies from 'js-cookie';
 
 const LoginForm: React.FC = () => {
     const router = useRouter();
@@ -26,10 +29,10 @@ const LoginForm: React.FC = () => {
         validationSchema,
         onSubmit: async (values, { setSubmitting }) => {
             try {
-                const response = await axios.post('/api/login', values);
+                const response = await axios.post('http://localhost:5001/api/login', values);
                 const { token, user } = response.data;
 
-                localStorage.setItem('token', token);
+                Cookies.set('token', token, { expires: 1 });
 
                 dispatch(loginSuccess({ token, user }));
 

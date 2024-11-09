@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+"use client";
+
 import localFont from "next/font/local";
 import "./globals.css";
 import { Provider } from "react-redux";
 import store from "./store";
+import { metadata } from "./metadata"; 
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -15,10 +17,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "Build Online Contact App",
-  description: "Build Online contact app challenge",
-};
+
 
 export default function RootLayout({
   children,
