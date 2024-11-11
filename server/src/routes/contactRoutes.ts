@@ -10,13 +10,12 @@ const contactRepository = new ContactRepository();
 const contactService = new ContactService(contactRepository)
 const contactController = new ContactController(contactService);
 
+contactRouter.use(authMiddleware);
 
-contactRouter.get('/', authMiddleware, contactController.getContacts.bind(contactController));
+contactRouter.get('/', contactController.getContacts.bind(contactController));
+contactRouter.post('/', validateContact, contactController.createContact.bind(contactController));
+contactRouter.put('/:contactId', validateContact, contactController.updateContact.bind(contactController));
+contactRouter.delete('/:contactId', contactController.deleteContact.bind(contactController));
 
-contactRouter.post('/', authMiddleware, validateContact, contactController.createContact.bind(contactController));
-
-contactRouter.put('/:contactId', authMiddleware, validateContact, contactController.updateContact.bind(contactController));
-
-contactRouter.delete('/:contactId', authMiddleware, contactController.deleteContact.bind(contactController));
 
 export default contactRouter;
