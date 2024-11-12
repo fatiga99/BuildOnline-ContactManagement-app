@@ -53,7 +53,7 @@ export class ContactController {
             contactData.userId = userId;
 
             const updatedContact = await this.contactService.updateContact(contactData);
-            res.status(200).end(updatedContact);
+            res.status(200).json(updatedContact);
         } 
         catch (error) {
             next(error);
