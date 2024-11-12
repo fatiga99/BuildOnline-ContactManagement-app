@@ -2,11 +2,11 @@
 
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { RootState } from "../store";
-import { fetchContacts } from "../features/contacts/contactService"; 
-import ContactList from "../features/contacts/components/contactList";
+import { RootState } from "../../store";
+import { fetchContacts } from "./contactService"; 
+import ContactList from "./components/contactList";
 import { useSelector } from "react-redux";
-import { AppDispatch } from "../store";
+import { AppDispatch } from "../../store";
 
 const ContactsPage: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();

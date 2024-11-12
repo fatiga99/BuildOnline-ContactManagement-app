@@ -1,17 +1,16 @@
 import React from 'react';
-import { useParams } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
-import { AppDispatch } from '@/app/store';
-import { editContact } from '../contactService';
 
 const ContactDetails: React.FC = () => {
     const params = useParams();
-    const contactId = params.id;
-    const dispatch: AppDispatch = useDispatch();
+    const router = useRouter();
+
+    const contactId = params.id ? parseInt(params.id as string, 10) : null;
 
     const contact = useSelector((state: RootState) =>
-        state.contacts.contacts.find(contact => contact.id === parseInt(contactId!))
+        contactId ? state.contacts.contacts.find(contact => contact.id === contactId) : null
     );
 
     if (!contact) {
@@ -19,13 +18,15 @@ const ContactDetails: React.FC = () => {
     }
 
     const handleEdit = () => {
-        dispatch(editContact({ contactId: contact.id, contactData: contact }));
+        router.push(`/contacts/edit/${contact.id}`);
     };
 
     return (
         <div className="contact-details-page">
             <div className="contact-card">
-                <img src={contact.profilePicture} alt={`${contact.name} profile`} />
+                {contact.profilePicture && (
+                    <img src={contact.profilePicture} alt={`${contact.name} profile`} />
+                )}
                 <h2>{contact.name}</h2>
                 <p><strong>Address:</strong> {contact.address}</p>
                 <p><strong>Phone Number:</strong> {contact.phoneNumber}</p>

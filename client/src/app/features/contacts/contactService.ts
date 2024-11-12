@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '@/app/store';
-import axios from 'axios';
+import axiosInstance from '@/utils/axiosConfig';
 import { Contact } from './interfaces/icontact';
 
 export const fetchContacts = createAsyncThunk(
@@ -14,7 +14,7 @@ export const fetchContacts = createAsyncThunk(
         }
 
         try {
-            const response = await axios.get('/api/contacts', {
+            const response = await axiosInstance.get('/api/contacts', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -37,7 +37,7 @@ export const createNewContact = createAsyncThunk(
         }
 
         try {
-            const response = await axios.post('/api/contacts', contactData, {
+            const response = await axiosInstance.post('/api/contacts', contactData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -60,7 +60,7 @@ export const editContact = createAsyncThunk(
         }
 
         try {
-            const response = await axios.put(`/api/contacts/${contactId}`, contactData, {
+            const response = await axiosInstance.put(`/api/contacts/${contactId}`, contactData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -83,7 +83,7 @@ export const removeContact = createAsyncThunk(
         }
 
         try {
-            await axios.delete(`/api/contacts/${contactId}`, {
+            await axiosInstance.delete(`/api/contacts/${contactId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

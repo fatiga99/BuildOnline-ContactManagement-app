@@ -36,7 +36,7 @@ const LoginForm: React.FC = () => {
 
                 dispatch(loginSuccess({ token, user }));
 
-                router.push('/contacts');
+                router.push('/features/contacts');
             } catch (error) {
                 console.error('Login failed', error);
             }
