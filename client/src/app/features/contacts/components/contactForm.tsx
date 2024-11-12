@@ -9,7 +9,7 @@ import { RootState, AppDispatch } from '@/app/store';
 import { createNewContact, editContact } from '../contactService';
 
 interface ContactFormProps {
-    contactId?: number; // Optional prop to indicate if we're editing
+    contactId?: number; 
 }
 
 const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
@@ -54,7 +54,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
                 } else {
                     await dispatch(createNewContact(values));
                 }
-                router.push('/contacts');
+                router.push('/features/contacts');
             } catch (error) {
                 console.error(isEditMode ? 'Edit failed' : 'Create failed', error);
             }

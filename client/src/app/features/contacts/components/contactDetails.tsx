@@ -1,16 +1,18 @@
+"use client";
+
 import React from 'react';
-import { useParams, useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
+import { useRouter } from 'next/navigation';
 
-const ContactDetails: React.FC = () => {
-    const params = useParams();
+interface ContactDetailsProps {
+    contactId: number;
+}
+
+const ContactDetails: React.FC<ContactDetailsProps> = ({ contactId }) => {
     const router = useRouter();
-
-    const contactId = params.id ? parseInt(params.id as string, 10) : null;
-
     const contact = useSelector((state: RootState) =>
-        contactId ? state.contacts.contacts.find(contact => contact.id === contactId) : null
+        state.contacts.contacts.find(contact => contact.id === contactId)
     );
 
     if (!contact) {
@@ -18,7 +20,7 @@ const ContactDetails: React.FC = () => {
     }
 
     const handleEdit = () => {
-        router.push(`/contacts/edit/${contact.id}`);
+        router.push(`/features/contacts/${contact.id}/edit`);
     };
 
     return (
