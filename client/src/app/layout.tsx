@@ -38,7 +38,7 @@ export default function RootLayout({
                 </div>
               </div>
 
-              <div className="flex items-center font-medium mr-[39px] text-[16px] leading-[40px]">
+              <div className="flex items-center font-medium mr-[39px] text-[16px] leading-[40px] font-sans">
                 <button className=" w-[47px] h-[40px] text-black text-left decoration-none hover:text-gray-600 mr-[58px]">Log In</button>
                 <button className="w-[117px] h-[49px] bg-[#9378FF] text-white rounded-[30px]  px-4 py-1 hover:bg-purple-600">
                   Sign In
