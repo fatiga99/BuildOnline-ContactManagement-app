@@ -51,10 +51,11 @@ const LoginForm: React.FC = () => {
             <form 
             onSubmit={handleSubmit}
             className="flex flex-col items-center space-y-[89px] ">
-                <div className="flex flex-col w-full  mt-[89px] mb-[89px]">
+                <div className="flex flex-col w-full  mt-[89px] mb-[89px] text-[16px] font-public-sans text-[#99879D] leading-[18.8px]">
                     <input
                         type="email"
                         name="email"
+                        placeholder="john@doe.com"
                         value={values.email}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -65,7 +66,7 @@ const LoginForm: React.FC = () => {
                     <input
                         type="password"
                         name="password"
-                        
+                        placeholder="john@doe.com"
                         value={values.password}
                         onChange={handleChange}
                         onBlur={handleBlur}
