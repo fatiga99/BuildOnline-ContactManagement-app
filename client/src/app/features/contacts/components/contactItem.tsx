@@ -17,7 +17,7 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact }) => {
         <div className="contact-item" onClick={handleClick} style={{ cursor: 'pointer' }}>
             <div className="contact-details">
                 <h2>{contact.name}</h2>
-                <p>Teléfono: {contact.phoneNumber}</p>
+                <p>Phone Number: {contact.phoneNumber}</p>
             </div>
         </div>
     );
