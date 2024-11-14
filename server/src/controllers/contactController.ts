@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { ContactService } from '../services/contactService';
 import { CreateContactDTO} from '../interfaces/DTOs/createContactDTO';
+import { ContactWithBase64DTO} from '../interfaces/DTOs/contactWithBase64DTO';
 import { ContactDTO } from '../interfaces/DTOs/contactDTO';
 import { CustomError } from '../utils/customError';
+import { Contact } from '../models/contact';
 
 export class ContactController {
     private contactService: ContactService;
@@ -11,18 +13,24 @@ export class ContactController {
         this.contactService = contactService;
     }
 
+
+
     public async getContacts(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userId = req.user?.id;
             if (!userId) return next(new CustomError('User ID is missing', 400));
 
             const contacts = await this.contactService.getContactsByUserId(userId);
-            res.json(contacts);
+
+            const contactsWithBase64Images = this.convertContactsToBase64(contacts);
+    
+            res.json(contactsWithBase64Images);
         } 
         catch (error) {
             next(error);
         }
     }
+
 
     public async createContact(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -31,6 +39,9 @@ export class ContactController {
 
             const contactData = req.body as CreateContactDTO;
             contactData.userId = userId;
+
+            contactData.profilePicture = this.processProfilePicture(contactData.profilePicture);
+
             const newContact = await this.contactService.createContact(contactData);
             res.status(201).json(newContact);
         } 
@@ -52,12 +63,35 @@ export class ContactController {
             contactData.id = contactId;
             contactData.userId = userId;
 
+            contactData.profilePicture = this.processProfilePicture(contactData.profilePicture);
+
             const updatedContact = await this.contactService.updateContact(contactData);
             res.status(200).json(updatedContact);
         } 
         catch (error) {
             next(error);
         }
+    }
+
+    private convertContactsToBase64(contacts: Contact[]): ContactWithBase64DTO[] {
+        return contacts.map(contact => {
+            const profilePictureBase64 = contact.profilePicture
+                ? `data:image/jpeg;base64,${contact.profilePicture.toString('base64')}`
+                : null;
+
+            return {
+                ...contact,
+                profilePicture: profilePictureBase64
+            };
+        });
+    }
+
+    private processProfilePicture(profilePicture: string | Buffer): Buffer  {
+        if (typeof profilePicture === 'string') {
+            const base64Data = profilePicture.replace(/^data:image\/\w+;base64,/, '');
+            return Buffer.from(base64Data, 'base64');
+        }
+        return profilePicture as Buffer;
     }
 
     public async deleteContact(req: Request, res: Response, next: NextFunction): Promise<void> {
