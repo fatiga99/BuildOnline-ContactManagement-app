@@ -8,7 +8,7 @@ interface ContactListProps {
 
 const ContactList: React.FC<ContactListProps> = ({ contacts }) => {
     return (
-        <div className="contact-list">
+        <div className="flex flex-wrap gap-4 mt-6">
             {contacts.length === 0 ? (
                 <p>No contacts available.</p>
             ) : (

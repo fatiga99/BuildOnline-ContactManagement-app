@@ -14,6 +14,7 @@ const config: Config = {
       },
       fontFamily: {
         redhat: ['"Red Hat Display"', 'sans-serif'], 
+        'public-sans': ['"Public Sans"', 'sans-serif'],
       },
     },
   },
