@@ -14,7 +14,6 @@ const ContactDetailsPage: React.FC = () => {
 
     return (
         <div>
-            <h1>Contact Details</h1>
             <ContactDetails contactId={contactId} />
         </div>
     );

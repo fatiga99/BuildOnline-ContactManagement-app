@@ -12,5 +12,10 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/contacts/:path*'], 
+    matcher: [
+        '/features/contacts',
+        '/features/contacts/create',
+        '/features/contacts/:id',
+        '/features/contacts/:id/edit',
+    ],
 };

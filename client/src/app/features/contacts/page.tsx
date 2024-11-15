@@ -27,7 +27,7 @@ const ContactsPage: React.FC = () => {
 
 
     return (
-        <div className="flex flex-col mt-[101px] max-w-screen-xl mx-auto">
+    <div className="flex flex-col mt-[101px] max-w-screen-full w-[1368px] h-[82px] mx-auto">
         <div className="flex justify-between items-center w-full">
             <h1 className="text-[39px] font-black leading-[51.68px] text-[#120E21] w-[174px] h-[52px] font-redhat text-left">
                 Contacts
