@@ -37,7 +37,6 @@ export class ContactController {
 
     public async createContact(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            console.log("Request body:", req.body);
             const userId = req.user?.id;
             if (!userId) return next(new CustomError('User ID is missing', 400));
     

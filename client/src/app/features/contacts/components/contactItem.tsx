@@ -21,13 +21,19 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact }) => {
          className="w-[663px] h-[103px] bg-[#FBEEFF] rounded-[30px] cursor-pointer flex hover:shadow-lg transition-shadow"
          >
             <div className="mr-4 mt-[19px] ml-[17px]">
-                <Image
-                    src={contact.profilePicture}
-                    alt={`${contact.name}'s avatar`}
-                    width={65}
-                    height={65}
-                    className="rounded-full object-cover w-[65px] h-[65px]"
-                />
+                {contact.profilePicture ? (
+                    <Image
+                        src={contact.profilePicture}
+                        alt={`${contact.name}'s avatar`}
+                        width={65}
+                        height={65}
+                        className="rounded-full object-cover w-[65px] h-[65px]"
+                    />
+                ) : (
+                    <div className="w-[65px] h-[65px] bg-gray-300 rounded-full flex items-center justify-center">
+                        <span>No Image</span>
+                    </div>
+                )}
             </div>
             <div className=" ml-[16px] mt-[26px]">
                 <h2 className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">

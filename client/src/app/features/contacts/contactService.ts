@@ -58,7 +58,6 @@ export const editContact = createAsyncThunk(
         if (!token) {
             return thunkAPI.rejectWithValue('No token available');
         }
-
         try {
             const response = await axiosInstance.put(`/api/contacts/${contactId}`, contactData, {
                 headers: {
