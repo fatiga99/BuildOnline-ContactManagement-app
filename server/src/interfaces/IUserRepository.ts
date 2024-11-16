@@ -1,7 +1,7 @@
-import { User } from "../models/user";
+import { RowDataPacket } from "mysql2";
 
 export interface IUserRepository {
-    getUserById(id: number): Promise<User>;
-    getUserByEmail(email: string): Promise<User>;
-    createUser(email: string, password: string): Promise<User>;
+    getUserById(id: number): Promise<RowDataPacket>; 
+    getUserByEmail(email: string): Promise<RowDataPacket>; 
+    createUser(email: string, password: string): Promise<number>; 
 }
