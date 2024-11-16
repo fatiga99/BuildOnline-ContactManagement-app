@@ -34,19 +34,34 @@ const emailValidation = () => Joi.string()
     });
 
 const phoneNumberValidation = () => Joi.string()
-    .pattern(new RegExp("^\\+?[0-9]{10,15}$"))
+    .pattern(new RegExp("^\\+?[0-9]{9,15}$"))
     .required()
     .messages({
         'string.pattern.base': contactValidationMessages.phoneNumber.patternMismatch,
         'any.required': contactValidationMessages.phoneNumber.required
     });
 
-const profilePictureValidation = () => Joi.binary()
-    .required()
-    .messages({
-        'any.required': 'Profile picture is required',
+const profilePictureValidation = () => Joi.alternatives()
+.try(
+    Joi.string().pattern(/^blob:http.+/).messages({
+        'string.pattern.base': 'Profile picture must be a valid Blob URL'
+    }),
+    Joi.string().uri().messages({
+        'string.uri': 'Profile picture must be a valid URL'
+    }),
+    Joi.string().pattern(/^data:image\/\w+;base64,/).messages({
+        'string.pattern.base': 'Profile picture must be a valid Base64 image'
+    }),
+    Joi.binary().messages({
         'binary.base': 'Profile picture must be a binary file'
-    });
+    })
+)
+.required()
+.messages({
+    'any.required': 'Profile picture is required'
+});
+
+
 
 const addressValidation = () => Joi.string()
     .min(1)
@@ -66,6 +81,7 @@ export const contactSchema = Joi.object({
 export const validateContact = (req: Request, res: Response, next: NextFunction): void => {
     const { error } = contactSchema.validate(req.body, { abortEarly: false });
     if (error) {
+        console.error('Validation error:', error.details.map((d) => d.message));
         res.status(400).json({ errors: error.details.map(detail => detail.message) });
         return;
     }
