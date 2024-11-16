@@ -41,25 +41,19 @@ const phoneNumberValidation = () => Joi.string()
         'any.required': contactValidationMessages.phoneNumber.required
     });
 
-const profilePictureValidation = () => Joi.alternatives()
-.try(
-    Joi.string().pattern(/^blob:http.+/).messages({
-        'string.pattern.base': 'Profile picture must be a valid Blob URL'
-    }),
-    Joi.string().uri().messages({
-        'string.uri': 'Profile picture must be a valid URL'
-    }),
-    Joi.string().pattern(/^data:image\/\w+;base64,/).messages({
-        'string.pattern.base': 'Profile picture must be a valid Base64 image'
-    }),
-    Joi.binary().messages({
-        'binary.base': 'Profile picture must be a binary file'
-    })
-)
-.required()
-.messages({
-    'any.required': 'Profile picture is required'
-});
+    const profilePictureValidation = () => Joi.alternatives()
+    .try(
+        Joi.string().uri().messages({
+            'string.uri': 'Profile picture must be a valid URL'
+        }),
+        Joi.binary().messages({
+            'binary.base': 'Profile picture must be a valid binary file'
+        })
+    )
+    .required()
+    .messages({
+        'any.required': 'Profile picture is required'
+    });
 
 
 

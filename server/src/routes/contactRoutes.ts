@@ -3,6 +3,7 @@ import { ContactRepository } from '../repositories/contactRepository';
 import { authMiddleware } from '../middleware/authMiddleware';
 import { validateContact } from '../middleware/contactValidator';
 import { ContactController } from '../controllers/contactController';
+import { IContactRepository } from '../interfaces/IContactRepository';
 import { ContactService } from '../services/contactService';
 
 const contactRouter = express.Router();

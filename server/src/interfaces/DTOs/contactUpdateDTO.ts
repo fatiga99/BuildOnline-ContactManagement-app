@@ -1,9 +1,9 @@
-export interface ContactDTO {
+export interface ContactUpdateDTO {
     id: number;
     name: string;
     email: string;
     phoneNumber: string;
     address: string;
-    profilePicture: string | Buffer; 
+    profilePicture: string; 
     userId: number;
 }

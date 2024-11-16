@@ -2,11 +2,9 @@ import { OkPacket, RowDataPacket } from "mysql2";
 import pool from "..";
 import { Contact } from "../models/contact";
 import { IContactRepository } from "../interfaces/IContactRepository";
-import { CreateContactDTO } from "../interfaces/DTOs/createContactDTO";
 import { CustomError } from "../utils/customError";
 
 export class ContactRepository implements IContactRepository {
-
     public async getContactsByUserId(userId: number): Promise<Contact[]> {
         const [contactRecords] = await pool.query<RowDataPacket[]>(
             `SELECT * 
@@ -19,15 +17,18 @@ export class ContactRepository implements IContactRepository {
             return [];
         }
 
-        const contacts = contactRecords.map((row: RowDataPacket) => new Contact(
-            row.id, row.name, row.email, row.phoneNumber, row.address, row.profilePicture, row.userId
-        ));
-
-        return contacts;
+        return contactRecords.map(row => ({
+            id: row.id,
+            name: row.name,
+            email: row.email,
+            phoneNumber: row.phoneNumber,
+            address: row.address,
+            profilePicture: row.profilePicture, 
+            userId: row.userId
+        }));
     }
 
-    public async getContactById(contactId: number): Promise<Contact> {
-
+    public async getContactById(contactId: number): Promise<Contact | null> {
         const [contactRecords] = await pool.query<RowDataPacket[]>(
             `SELECT * 
              FROM contact 
@@ -36,25 +37,22 @@ export class ContactRepository implements IContactRepository {
         );
 
         if (contactRecords.length === 0) {
-            throw new CustomError('Contact not found', 404);
+            return null;
         }
 
-        const contactRow = contactRecords[0];
-        const newContact = new Contact(
-            contactRow.id, 
-            contactRow.name, 
-            contactRow.email, 
-            contactRow.phoneNumber, 
-            contactRow.address, 
-            contactRow.profilePicture, 
-            contactRow.userId
-        );
-
-        return newContact;
+        const row = contactRecords[0];
+        return {
+            id: row.id,
+            name: row.name,
+            email: row.email,
+            phoneNumber: row.phoneNumber,
+            address: row.address,
+            profilePicture: row.profilePicture, 
+            userId: row.userId
+        };
     }
 
-
-    public async createContact(contact: CreateContactDTO): Promise<Contact> {
+    public async createContact(contact: Contact): Promise<number> {
         const query = `
             INSERT INTO contact (name, email, phoneNumber, address, profilePicture, userId) 
             VALUES (?, ?, ?, ?, ?, ?)
@@ -64,27 +62,16 @@ export class ContactRepository implements IContactRepository {
             contact.email, 
             contact.phoneNumber, 
             contact.address, 
-            contact.profilePicture, 
+            contact.profilePicture,
             contact.userId
         ];
-
-        const [insertContactResult] = await pool.query<RowDataPacket[]>(query, values);
-        const insertId = (insertContactResult as RowDataPacket).insertId;
-
-        const newContact = new Contact(
-            insertId, 
-            contact.name, 
-            contact.email, 
-            contact.phoneNumber, 
-            contact.address, 
-            contact.profilePicture, 
-            contact.userId
-        );
-
-        return newContact;
+    
+        const [result] = await pool.query<OkPacket>(query, values);
+    
+        return result.insertId;
     }
 
-    public async updateContact( contact: Contact): Promise<Contact> {
+    public async updateContact(contact: Contact): Promise<void> {
         const query = `
             UPDATE contact 
             SET name = ?, 
@@ -104,20 +91,22 @@ export class ContactRepository implements IContactRepository {
             contact.userId
         ];
     
-        const [updateContactResult] = await pool.query<OkPacket>(query, values);
+        const [updateResult] = await pool.query<OkPacket>(query, values);
 
-        if (updateContactResult.affectedRows === 0) {
+        if (updateResult.affectedRows === 0) {
             throw new CustomError('Contact not found or not updated', 404);
         }
-
-        return contact;
     }
 
     public async deleteContact(contactId: number): Promise<void> {
-        await pool.query(
+        const [result] = await pool.query<OkPacket>(
             `DELETE FROM contact 
              WHERE id = ?`, 
             [contactId]
         );
+
+        if (result.affectedRows === 0) {
+            throw new CustomError('Contact not found or already deleted', 404);
+        }
     }
 }

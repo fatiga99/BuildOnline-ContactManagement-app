@@ -6,6 +6,8 @@ import { ContactDTO } from '../interfaces/DTOs/contactDTO';
 import { CustomError } from '../utils/customError';
 import { Contact } from '../models/contact';
 import axios from 'axios';
+import cloudinary from '../../cloudinaryConfig';
+import { ContactUpdateDTO } from '../interfaces/DTOs/contactUpdateDTO';
 
 export class ContactController {
     private contactService: ContactService;
@@ -35,14 +37,12 @@ export class ContactController {
 
     public async createContact(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            console.log("Request body:", req.body); 
+            console.log("Request body:", req.body);
             const userId = req.user?.id;
             if (!userId) return next(new CustomError('User ID is missing', 400));
     
             const contactData = req.body as CreateContactDTO;
             contactData.userId = userId;
-    
-            contactData.profilePicture = await this.processProfilePicture(contactData.profilePicture);
     
             const newContact = await this.contactService.createContact(contactData);
             res.status(201).json(newContact);
@@ -52,20 +52,20 @@ export class ContactController {
         }
     }
     
+    
+
     public async updateContact(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const contactId = parseInt(req.params.contactId); 
-            const userId = req.user?.id; 
-        
+            const userId = req.user?.id;
+    
             if (!userId) {
                 return next(new CustomError('User ID is missing', 400));
             }
     
-            const contactData = req.body as ContactDTO;
+            const contactData = req.body as ContactUpdateDTO;
             contactData.id = contactId;
             contactData.userId = userId;
-    
-            contactData.profilePicture = await this.processProfilePicture(contactData.profilePicture);
     
             const updatedContact = await this.contactService.updateContact(contactData);
             res.status(200).json(updatedContact);
@@ -74,6 +74,8 @@ export class ContactController {
             next(error);
         }
     }
+    
+    
 
     private convertContactsToBase64(contacts: Contact[]): ContactWithBase64DTO[] {
         return contacts.map(contact => {
@@ -88,18 +90,7 @@ export class ContactController {
         });
     }
 
-    private async processProfilePicture(profilePicture: string | Buffer): Promise<Buffer> {
-        if (typeof profilePicture === 'string') {
-            if (profilePicture.startsWith('http://') || profilePicture.startsWith('https://')) {
-                const response = await axios.get(profilePicture, { responseType: 'arraybuffer' });
-                return Buffer.from(response.data);
-            } else {
-                const base64Data = profilePicture.replace(/^data:image\/\w+;base64,/, '');
-                return Buffer.from(base64Data, 'base64');
-            }
-        }
-        return profilePicture as Buffer;
-    }
+    
 
     public async deleteContact(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
