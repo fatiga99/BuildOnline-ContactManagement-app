@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { metadata } from "./metadata"; 
 import Image from "next/image";
-
+import { useRouter } from "next/navigation";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,6 +25,7 @@ export default function RootLayout({
     children: React.ReactNode;
   }>) 
   {
+    const router = useRouter(); 
     return (
       <html lang="en">
         <body
@@ -38,10 +39,15 @@ export default function RootLayout({
               </div>
 
               <div className="flex items-center font-medium mr-[39px] text-[16px] leading-[40px] font-sans">
-                <button className=" w-[47px] h-[40px] text-black text-left decoration-none hover:text-gray-600 mr-[58px]">Log In</button>
-                <button className="w-[117px] h-[49px] bg-[#9378FF] text-white rounded-[30px]  px-4 py-1 hover:bg-purple-600">
-                  Sign In
-                </button>
+                <button 
+                onClick={() => router.push('/features/contacts')}
+                className=" w-[70px] h-[40px] text-[#3A3A3A] text-left decoration-none hover:text-gray-600 ">Contacts</button>
+              </div>
+
+              <div className="flex items-center font-medium mr-[39px] text-[16px] leading-[40px] font-sans">
+                <button 
+                onClick={() => router.push('/login')}
+                className=" w-[47px] h-[40px] text-black text-left decoration-none hover:text-gray-600 ">Log In</button>
               </div>
             </header>
             

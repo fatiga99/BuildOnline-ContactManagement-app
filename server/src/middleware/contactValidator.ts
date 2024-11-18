@@ -34,7 +34,7 @@ const emailValidation = () => Joi.string()
     });
 
 const phoneNumberValidation = () => Joi.string()
-    .pattern(new RegExp("^\\+?[0-9]{9,15}$"))
+    .pattern(new RegExp(/^\+?[0-9]{9,15}$/))
     .required()
     .messages({
         'string.pattern.base': contactValidationMessages.phoneNumber.patternMismatch,

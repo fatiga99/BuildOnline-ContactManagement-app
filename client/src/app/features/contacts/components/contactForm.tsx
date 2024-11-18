@@ -95,7 +95,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
                 throw new Error('No URL returned from Cloudinary');
             }
         } catch (error) {
-            console.error('Error al subir la imagen a Cloudinary:', error);
+            console.error('Error Uploading Image to Cloudinary', error);
             alert(isEditMode ? 'Edit failed' : 'Create failed');
         }
     };
