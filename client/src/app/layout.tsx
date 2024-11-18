@@ -32,7 +32,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <Provider store={store}>
-            <header className="w-[1368px] h-[82px] bg-[#FBEEFF] rounded-[30px] max-w-full mx-auto flex items-center justify-between px-8 mt-[52px]">              <div className="flex items-center space-x-2 ml-[39px]">
+            <header className="max-w-full w-[90%] h-[82px] bg-[#FBEEFF] rounded-[30px]  mx-auto flex items-center justify-between px-8 mt-[52px]">              <div className="flex items-center space-x-2 ml-[39px]">
                 <div className="w-[125px] h-[21px]">
                   <Image src="/Imgs/logo-b.png" alt="B logo" layout="responsive" width={125} height={21} />
                 </div>
@@ -51,7 +51,7 @@ export default function RootLayout({
               </div>
             </header>
             
-            <main className="max-w-[1368px] mx-auto">
+            <main className="max-w-full w-[90%] mx-auto">
               {children}
             </main>
           </Provider>
