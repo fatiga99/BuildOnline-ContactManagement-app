@@ -122,7 +122,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
                     value= {values.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] 
+                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none
                      text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
                 />
                 {touched.name && errors.name && <div className="text-red-500 text-sm">{errors.name}</div>}
@@ -138,7 +138,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
                         name="profilePicture"
                         value={values.profilePicture ? "Image selected" : "Upload file"}
                         readOnly
-                        className="p-2 pr-8 border rounded-[8px] bg-[#FBEEFF] h-[56px] 
+                        className="p-2 pr-8 border rounded-[8px] bg-[#FBEEFF] h-[56px]  focus:outline-none
                             text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans w-full"
                     />
                     <input
@@ -162,7 +162,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
                 </div>
             </div>
 
-        
             <div className="flex flex-col my-1">
                 <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">Address</label>
                 <input
@@ -171,7 +170,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
                     value={values.address}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] 
+                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none
                      text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
                 />
                 {touched.address && errors.address && <div className="text-red-500 text-sm">{errors.address}</div>}
@@ -185,7 +184,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
                     value={values.phoneNumber}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] 
+                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none
                      text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
                 />
                 {touched.phoneNumber && errors.phoneNumber && <div className="text-red-500 text-sm">{errors.phoneNumber}</div>}
@@ -200,7 +199,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
                     value={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] 
+                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none
                      text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans w-1/2"
                 />
                 {touched.email && errors.email && <div className="text-red-500 text-sm">{errors.email}</div>}

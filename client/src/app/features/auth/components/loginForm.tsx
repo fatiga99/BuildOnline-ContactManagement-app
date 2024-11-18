@@ -59,7 +59,7 @@ const LoginForm: React.FC = () => {
                         value={values.email}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className="w-[775px] h-[56px] rounded-tl-[8px] bg-[#FBEEFF] backdrop-blur-[40px] p-4"
+                        className="w-[775px] h-[56px] rounded-md bg-[#FBEEFF] backdrop-blur-[40px] p-4 focus:outline-none"
                     />
                     {touched.email && errors.email && <div className="text-red-500 text-sm mt-[10px]">{errors.email}</div>}
 
@@ -70,7 +70,7 @@ const LoginForm: React.FC = () => {
                         value={values.password}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className="w-[775px] h-[56px] rounded-tl-[8px] bg-[#FBEEFF] backdrop-blur-[40px] p-4 mt-[30px]"
+                        className="w-[775px] h-[56px] rounded-md bg-[#FBEEFF] backdrop-blur-[40px] p-4 mt-[30px] focus:outline-none"
                     />
                     {touched.password && errors.password && <div className="text-red-500 text-sm mt-[10px]">{errors.password}</div>}
                 </div>
