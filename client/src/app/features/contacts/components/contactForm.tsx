@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '@/app/store';
-import { createNewContact, editContact } from '../contactService';
+import { createNewContact, editContact, removeContact } from '../contactService';
 
 interface ContactFormProps {
     contactId?: number; 
@@ -95,8 +95,18 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
                 throw new Error('No URL returned from Cloudinary');
             }
         } catch (error) {
-            console.error('Error al subir la imagen a Cloudinary:', error);
+            console.error('Error Uploading Image to Cloudinary', error);
             alert(isEditMode ? 'Edit failed' : 'Create failed');
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!contactId) return; 
+        try {
+            await dispatch(removeContact(contactId));
+            router.push('/features/contacts'); 
+        } catch (error) {
+            console.error('Error deleting contact', error);
         }
     };
     
@@ -122,32 +132,34 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
                 <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">
                     Profile Picture
                 </label>
-                <input
-                    type="text"
-                    name="profilePicture"
-                    value={values.profilePicture ? "Image selected" : "Upload file"}
-                    readOnly
-                    className="p-2 pr-8 border rounded-[8px] bg-[#FBEEFF] h-[56px] 
-                            text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
-                />
-                <input
-                    type="file"
-                    accept="image/*"
-                    id="upload-input"
-                    style={{ display: 'none' }}
-                    onChange={handleImageUpload}
-                />
-                <label htmlFor="upload-input" className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer">
-                    <svg 
-                        width="20" 
-                        height="20" 
-                        viewBox="0 0 20 20" 
-                        fill="none" 
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path d="M0 17.8947H20V20H0V17.8947ZM11.1111 4.02947V15.7895H8.88889V4.02947L2.14333 10.4211L0.572222 8.93263L10 0L19.4278 8.93158L17.8567 10.42L11.1111 4.03158V4.02947Z" fill="#99879D"/>
-                    </svg>
-                </label>
+                <div className="relative">
+                    <input
+                        type="text"
+                        name="profilePicture"
+                        value={values.profilePicture ? "Image selected" : "Upload file"}
+                        readOnly
+                        className="p-2 pr-8 border rounded-[8px] bg-[#FBEEFF] h-[56px] 
+                            text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans w-full"
+                    />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        id="upload-input"
+                        style={{ display: 'none' }}
+                        onChange={handleImageUpload}
+                    />
+                    <label htmlFor="upload-input" className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer">
+                        <svg 
+                            width="20" 
+                            height="20" 
+                            viewBox="0 0 20 20" 
+                            fill="none" 
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path d="M0 17.8947H20V20H0V17.8947ZM11.1111 4.02947V15.7895H8.88889V4.02947L2.14333 10.4211L0.572222 8.93263L10 0L19.4278 8.93158L17.8567 10.42L11.1111 4.03158V4.02947Z" fill="#99879D"/>
+                        </svg>
+                    </label>
+                </div>
             </div>
 
         
@@ -195,14 +207,26 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
             </div>
 
             
-            <div className="col-span-2 flex justify-center mt-4">
+            <div className="col-span-2 flex justify-center font-medium font-public-sans leading-[21.15px] text-[18px] mt-10">
                 <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-[#9378FF] text-white px-6 py-2 rounded-full font-bold hover:bg-purple-600 transition-colors"
+                    className="w-[263px] h-[59px] bg-[#9378FF] px-6 py-2 rounded-full
+                     hover:bg-purple-600 transition-colors text-white "
                 >
-                    {isEditMode ? 'Update Contact' : 'Create Contact'}
+                    SAVE
                 </button>
+
+                {isEditMode && (
+                    <button
+                        type="button"
+                        onClick={handleDelete}
+                        className="w-[263px] h-[59px] bg-[#FF7878] ml-4 px-6 py-2 rounded-full
+                        hover:bg-red-600 transition-colors text-white"
+                    >
+                        DELETE
+                    </button>
+                )}
             </div>
     </form>
     );

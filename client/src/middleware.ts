@@ -10,12 +10,7 @@ export function middleware(req: NextRequest) {
 
     return NextResponse.next();
 }
-
 export const config = {
-    matcher: [
-        '/features/contacts',
-        '/features/contacts/create',
-        '/features/contacts/:id',
-        '/features/contacts/:id/edit',
-    ],
+    matcher: '/:path*', 
 };
+
