@@ -47,11 +47,11 @@ const LoginForm: React.FC = () => {
 
 
     return (
-        <div className="flex flex-col items-center mt-[89px]">
+        <div className="flex flex-col items-center space-y-8 md:space-y-16">
             <form 
             onSubmit={handleSubmit}
-            className="flex flex-col items-center space-y-[89px] ">
-                <div className="flex flex-col w-full  mt-[89px] mb-[89px] text-[16px] font-public-sans text-[#99879D] leading-[18.8px]">
+            className="flex flex-col items-center space-y-6 md:space-y-12 ">
+                <div className="max-w-[775px] flex flex-col w-full  mt-[38px] md:mt-20 text-[16px] font-public-sans text-[#99879D] leading-[18.8px]">
                     <input
                         type="email"
                         name="email"
@@ -59,7 +59,7 @@ const LoginForm: React.FC = () => {
                         value={values.email}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className="w-[775px] h-[56px] rounded-md bg-[#FBEEFF] backdrop-blur-[40px] p-4 focus:outline-none"
+                        className="w-[343px] md:w-[775px] h-[56px] rounded-md bg-[#FBEEFF] backdrop-blur-[40px] p-4 focus:outline-none"
                     />
                     {touched.email && errors.email && <div className="text-red-500 text-sm mt-[10px]">{errors.email}</div>}
 
@@ -70,19 +70,21 @@ const LoginForm: React.FC = () => {
                         value={values.password}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className="w-[775px] h-[56px] rounded-md bg-[#FBEEFF] backdrop-blur-[40px] p-4 mt-[30px] focus:outline-none"
+                        className="w-[343px] md:w-[775px] h-[56px] rounded-md bg-[#FBEEFF] backdrop-blur-[40px] p-4 mt-[30px] focus:outline- mb-[38px] md:mb-20"
                     />
                     {touched.password && errors.password && <div className="text-red-500 text-sm mt-[10px]">{errors.password}</div>}
                 </div>
 
+                <div className='mt-[38px] md:mt-[89px]'>
                 <button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="w-[263px] h-[58.12px] bg-[#9378FF] rounded-[60px] text-white font-medium text-[18px] leading-[21.15px] text-center mb-[262.88px]">
+                    className="w-[263px] h-[58.12px] bg-[#9378FF] rounded-[60px] text-white font-medium text-[18px] leading-[21.15px] text-center ">
                     <span className="block w-[53px] h-[23px] mx-auto">
                         Login
                     </span>
                 </button>
+                </div>
             </form>
         </div>
     );
