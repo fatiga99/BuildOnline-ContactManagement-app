@@ -22,7 +22,7 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact }) => {
     return (
         <div
             onClick={handleClick}
-            className="w-[663px] h-[103px] bg-[#FBEEFF] rounded-[30px] cursor-pointer flex hover:shadow-lg transition-shadow"
+            className="max-w-2xl w-full  h-[103px] bg-[#FBEEFF] rounded-[30px] cursor-pointer flex hover:shadow-lg transition-shadow"
         >
             <div className="mr-4 mt-[19px] ml-[17px]">
                 <Image

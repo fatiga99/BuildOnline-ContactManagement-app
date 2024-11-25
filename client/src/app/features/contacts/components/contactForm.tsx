@@ -112,123 +112,137 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
     
 
     return (
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4 w-full px-16 mt-4">
-       
-            <div className="flex flex-col my-1">
-                <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">Name</label>
-                <input
-                    type="text"
-                    name="name"
-                    value= {values.name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none
-                     text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
-                />
-                {touched.name && errors.name && <div className="text-red-500 text-sm">{errors.name}</div>}
-            </div>
-
-            <div className="relative flex flex-col my-1">
-                <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">
-                    Profile Picture
-                </label>
-                <div className="relative">
-                    <input
-                        type="text"
-                        name="profilePicture"
-                        value={values.profilePicture ? "Image selected" : "Upload file"}
-                        readOnly
-                        className="p-2 pr-8 border rounded-[8px] bg-[#FBEEFF] h-[56px]  focus:outline-none
-                            text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans w-full"
-                    />
-                    <input
-                        type="file"
-                        accept="image/*"
-                        id="upload-input"
-                        style={{ display: 'none' }}
-                        onChange={handleImageUpload}
-                    />
-                    <label htmlFor="upload-input" className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer">
-                        <svg 
-                            width="20" 
-                            height="20" 
-                            viewBox="0 0 20 20" 
-                            fill="none" 
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path d="M0 17.8947H20V20H0V17.8947ZM11.1111 4.02947V15.7895H8.88889V4.02947L2.14333 10.4211L0.572222 8.93263L10 0L19.4278 8.93158L17.8567 10.42L11.1111 4.03158V4.02947Z" fill="#99879D"/>
-                        </svg>
-                    </label>
-                </div>
-            </div>
-
-            <div className="flex flex-col my-1">
-                <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">Address</label>
-                <input
-                    type="text"
-                    name="address"
-                    value={values.address}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none
-                     text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
-                />
-                {touched.address && errors.address && <div className="text-red-500 text-sm">{errors.address}</div>}
-            </div>
-
-            <div className="flex flex-col my-1">
-                <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">Phone</label>
-                <input
-                    type="text"
-                    name="phoneNumber"
-                    value={values.phoneNumber}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none
-                     text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
-                />
-                {touched.phoneNumber && errors.phoneNumber && <div className="text-red-500 text-sm">{errors.phoneNumber}</div>}
-            </div>
-
-            
-            <div className="flex flex-col col-span-2 my-1">
-                <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">Email</label>
-                <input
-                    type="email"
-                    name="email"
-                    value={values.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none
-                     text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans w-1/2"
-                />
-                {touched.email && errors.email && <div className="text-red-500 text-sm">{errors.email}</div>}
-            </div>
-
-            
-            <div className="col-span-2 flex justify-center font-medium font-public-sans leading-[21.15px] text-[18px] mt-10">
-                <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-[263px] h-[59px] bg-[#9378FF] px-6 py-2 rounded-full
-                     hover:bg-purple-600 transition-colors text-white "
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 gap-4 md:grid-cols-2 w-full px-4 sm:px-8 lg:px-16 mt-4"
+        >
+          <div className="flex flex-col">
+            <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">
+              Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
+            />
+            {touched.name && errors.name && <div className="text-red-500 text-sm">{errors.name}</div>}
+          </div>
+      
+          <div className="relative flex flex-col">
+            <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">
+              Profile Picture
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                name="profilePicture"
+                value={values.profilePicture ? "Image selected" : "Upload file"}
+                readOnly
+                className="p-2 pr-8 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans w-full"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                id="upload-input"
+                style={{ display: 'none' }}
+                onChange={handleImageUpload}
+              />
+              <label
+                htmlFor="upload-input"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                    SAVE
-                </button>
-
-                {isEditMode && (
-                    <button
-                        type="button"
-                        onClick={handleDelete}
-                        className="w-[263px] h-[59px] bg-[#FF7878] ml-4 px-6 py-2 rounded-full
-                        hover:bg-red-600 transition-colors text-white"
-                    >
-                        DELETE
-                    </button>
-                )}
+                  <path
+                    d="M0 17.8947H20V20H0V17.8947ZM11.1111 4.02947V15.7895H8.88889V4.02947L2.14333 10.4211L0.572222 8.93263L10 0L19.4278 8.93158L17.8567 10.42L11.1111 4.03158V4.02947Z"
+                    fill="#99879D"
+                  />
+                </svg>
+              </label>
             </div>
-    </form>
-    );
+          </div>
+      
+          <div className="flex flex-col">
+            <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">
+              Address
+            </label>
+            <input
+              type="text"
+              name="address"
+              value={values.address}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
+            />
+            {touched.address && errors.address && (
+              <div className="text-red-500 text-sm">{errors.address}</div>
+            )}
+          </div>
+      
+          <div className="flex flex-col">
+            <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">
+              Phone
+            </label>
+            <input
+              type="text"
+              name="phoneNumber"
+              value={values.phoneNumber}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
+            />
+            {touched.phoneNumber && errors.phoneNumber && (
+              <div className="text-red-500 text-sm">{errors.phoneNumber}</div>
+            )}
+          </div>
+      
+          <div className="col-span-1 md:col-span-2 flex flex-col">
+            <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
+            />
+            {touched.email && errors.email && (
+              <div className="text-red-500 text-sm">{errors.email}</div>
+            )}
+          </div>
+      
+          <div className="col-span-1 md:col-span-2 flex justify-center space-x-4 mt-8">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-[263px] h-[59px] bg-[#9378FF] px-6 py-2 rounded-full hover:bg-purple-600 transition-colors text-white"
+            >
+              SAVE
+            </button>
+      
+            {isEditMode && (
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="w-[263px] h-[59px] bg-[#FF7878] px-6 py-2 rounded-full hover:bg-red-600 transition-colors text-white"
+              >
+                DELETE
+              </button>
+            )}
+          </div>
+        </form>
+      );
+      
 };
 
 export default ContactForm;

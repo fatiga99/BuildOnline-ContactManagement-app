@@ -37,9 +37,9 @@ const ContactsPage: React.FC = () => {
 
 
     return (
-    <div className="flex flex-col mt-[101px] max-w-screen-full w-[1368px] h-[82px] mx-auto">
+    <div className="flex flex-col items-center mt-[6.3125rem] md:mt-24 max-w-full w-[100%] mx-auto">
         <div className="flex justify-between items-center w-full">
-            <h1 className="text-[39px] font-black leading-[51.68px] text-[#120E21] w-[174px] h-[52px] font-redhat text-left">
+            <h1 className="text-[32px] md:text-[39px] font-black leading-tight text-[#120E21] w-auto font-redhat text-left">
                 Contacts
             </h1>
             <button
@@ -85,7 +85,7 @@ const ContactsPage: React.FC = () => {
                 </svg>
             </div>    
         </div>
-        <div className="mt-9">
+        <div className="flex flex-wrap flex-col gap-4 mt-9 w-full justify-start">
             {loading && <p>Loading Contacts...</p>}
             {error && <p>Error loading contacts: {error}</p>}
             {contacts && <ContactList contacts={filteredContacts} />}
