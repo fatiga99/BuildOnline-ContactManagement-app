@@ -2,11 +2,11 @@
 
 import React from "react";
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '@/app/store';
 import { createNewContact, editContact, removeContact } from '../contactService';
+import { contactValidationSchema } from '../schemas/contactFormValidaiton'
 
 interface ContactFormProps {
     contactId?: number; 
@@ -37,17 +37,10 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
         profilePicture: '',
     };
 
-    const validationSchema = Yup.object({
-        name: Yup.string().required('Name is required'),
-        address: Yup.string().required('Address is required'),
-        phoneNumber: Yup.string().required('Phone number is required'),
-        email: Yup.string().email('Invalid email format').required('Email is required'),
-        profilePicture: Yup.string().required('Profile picture is required'),
-    });
-
-    const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue } = useFormik({
+    const { values, errors, touched, handleChange, handleBlur, handleSubmit, 
+        isSubmitting, setFieldValue } = useFormik({
         initialValues,
-        validationSchema,
+        validationSchema: contactValidationSchema,
         onSubmit: async (values, { setSubmitting }) => {
             try {
                 if (isEditMode) {
