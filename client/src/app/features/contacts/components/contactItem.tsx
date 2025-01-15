@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Contact } from '../interfaces/icontact';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';

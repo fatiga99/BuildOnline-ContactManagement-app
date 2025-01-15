@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '@/app/store';
 import axiosInstance from '@/utils/axiosConfig';
 import { Contact } from './interfaces/icontact';
+import { handleAxiosError } from '@/utils/axiosErrorHandler';
 
 export const fetchContacts = createAsyncThunk(
     'contacts/fetchContacts',
@@ -20,8 +21,8 @@ export const fetchContacts = createAsyncThunk(
                 },
             });
             return response.data;
-        } catch (error: any) {
-            return thunkAPI.rejectWithValue(error.response?.data || 'An error occurred');
+        } catch (error) {
+            return thunkAPI.rejectWithValue(handleAxiosError(error));
         }
     }
 );
@@ -43,8 +44,8 @@ export const createNewContact = createAsyncThunk(
                 },
             });
             return response.data;
-        } catch (error: any) {
-            return thunkAPI.rejectWithValue(error.response?.data || 'An error occurred');
+        } catch (error) {
+            return thunkAPI.rejectWithValue(handleAxiosError(error));
         }
     }
 );
@@ -65,8 +66,8 @@ export const editContact = createAsyncThunk(
                 },
             });
             return response.data;
-        } catch (error: any) {
-            return thunkAPI.rejectWithValue(error.response?.data || 'An error occurred');
+        } catch (error) {
+            return thunkAPI.rejectWithValue(handleAxiosError(error));
         }
     }
 );
@@ -88,8 +89,8 @@ export const removeContact = createAsyncThunk(
                 },
             });
             return contactId;
-        } catch (error: any) {
-            return thunkAPI.rejectWithValue(error.response?.data || 'An error occurred');
+        } catch (error) {
+            return thunkAPI.rejectWithValue(handleAxiosError(error));
         }
     }
 );

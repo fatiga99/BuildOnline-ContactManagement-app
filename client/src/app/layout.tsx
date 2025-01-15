@@ -4,7 +4,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Provider } from "react-redux";
 import store from "./store";
-import { metadata } from "./metadata"; 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 

@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(req: NextRequest) {
     const loginUrl = new URL('/login', req.url);
-    const token = req.cookies.get('token')?.value;  
+    const token = req.cookies.get('token')?.value;
+
+    if (req.nextUrl.pathname === '/login') {
+        return NextResponse.next();
+    }
 
     if (!token) {
         return NextResponse.redirect(loginUrl);
@@ -10,7 +14,12 @@ export function middleware(req: NextRequest) {
 
     return NextResponse.next();
 }
-export const config = {
-    matcher: '/:path*', 
-};
 
+export const config = {
+    matcher: [
+        '/features/contacts',
+        '/features/contacts/create',
+        '/features/contacts/:id',
+        '/features/contacts/:id/edit',
+    ],
+};
