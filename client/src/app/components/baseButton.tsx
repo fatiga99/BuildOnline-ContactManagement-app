@@ -7,18 +7,18 @@ interface BaseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const BaseButton: React.FC<BaseButtonProps> = ({ variant = 'primary', className, children, ...props }) => {
-    const baseStyles = '';
+    const baseStyles = 'px-6 py-2 rounded-full transition-colors font-medium';
+
     const variants = {
-        primary: '',
-        delete: '',
+        primary: 'bg-[#9378FF] hover:bg-purple-600 text-white text-[18px] leading-[21.15px]',
+        delete: 'bg-[#FF7878] hover:bg-red-600 text-white',
         loginSmall: '',
     };
 
+    const buttonClasses = `${baseStyles} ${variants[variant]} ${className || ''}`.trim();
+
     return (
-        <button 
-        className={`${baseStyles} ${variants[variant]} ${className}`}
-        {...props}
-        >
+        <button className={buttonClasses} {...props}>
             {children}
         </button>
     );
