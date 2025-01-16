@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
-import { UserService } from '../services/userService';
-import { CreateUserDTO } from '../interfaces/DTOs/createUserDTO';
-import { CustomError } from '../utils/customError';
+import { NextFunction, Request, Response } from "express";
+import { UserService } from "../services/userService";
+import { CreateUserDTO } from "../interfaces/DTOs/createUserDTO";
+import { CustomError } from "../utils/customError";
 
 export class UserController {
     private userService: UserService;
@@ -15,8 +15,7 @@ export class UserController {
             const { email, password } = req.body as CreateUserDTO;
             const token = await this.userService.login(email, password);
             res.json({ token });
-        }
-         catch (error) {
+        } catch (error) {
             next(error);
         }
     }
@@ -25,13 +24,22 @@ export class UserController {
         try {
             const userId = req.user?.id;
             if (!userId) {
-                return next(new CustomError('User ID is missing', 400));
+                return next(new CustomError("User ID is missing", 400));
             }
 
             const userInfo = await this.userService.getUserInfo(userId);
             res.json(userInfo);
-        } 
-        catch (error) {
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    public async createUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { email, password } = req.body as CreateUserDTO;
+            const user = await this.userService.createUser(email, password);
+            res.status(201).json(user);
+        } catch (error) {
             next(error);
         }
     }
