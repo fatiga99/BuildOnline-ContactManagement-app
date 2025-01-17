@@ -1,32 +1,23 @@
 "use client";
 
 import React from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import { loginValidationSchema } from '../schemas/loginValidation';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../authSlice';
 import Cookies from 'js-cookie';
+import { useFormik } from 'formik';
+import BaseButton from '@/app/components/baseButton';
 
 const LoginForm: React.FC = () => {
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const validationSchema = Yup.object({
-        email: Yup.string()
-            .email('Invalid email format')  
-            .required('Email is required'), 
-        password: Yup.string()
-            .min(8, 'Password must have at least 8 characters, including letters and numbers') 
-            .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must have at least 8 characters, including letters and numbers')
-            .required('Password is required'), 
-    });
-
     const { values, errors, touched, handleChange,
         handleBlur, handleSubmit, isSubmitting } = useFormik({
         initialValues: { email: '', password: '' },
-        validationSchema,
+        validationSchema: loginValidationSchema,
         onSubmit: async (values, { setSubmitting }) => {
             try {
                 const response = await axios.post('http://localhost:5001/api/login', values);
@@ -76,14 +67,15 @@ const LoginForm: React.FC = () => {
                 </div>
 
                 <div className='mt-[38px] md:mt-[89px]'>
-                <button 
+                <BaseButton 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="w-[263px] h-[58.12px] bg-[#9378FF] rounded-[60px] text-white font-medium text-[18px] leading-[21.15px] text-center ">
+                    variant="primary"
+                    className="w-[263px] h-[58.12px]">
                     <span className="block w-[53px] h-[23px] mx-auto">
                         Login
                     </span>
-                </button>
+                </BaseButton>
                 </div>
             </form>
         </div>

@@ -1,5 +1,4 @@
 import { ButtonHTMLAttributes } from "react";
-import { cva } from "class-variance-authority"
 
 interface BaseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'primary' | 'delete' | 'loginSmall'; 
@@ -7,11 +6,11 @@ interface BaseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const BaseButton: React.FC<BaseButtonProps> = ({ variant = 'primary', className, children, ...props }) => {
-    const baseStyles = 'px-6 py-2 rounded-full transition-colors font-medium';
+    const baseStyles = 'rounded-[60px] transition-colors font-public-sans font-medium  text-white text-white';
 
     const variants = {
-        primary: 'bg-[#9378FF] hover:bg-purple-600 text-white text-[18px] leading-[21.15px]',
-        delete: 'bg-[#FF7878] hover:bg-red-600 text-white',
+        primary: 'bg-[#9378FF] hover:bg-purple-600  text-[18px] leading-[21.15px]',
+        delete: 'bg-[#FF7878] hover:bg-red-600 px-6 py-2  text-[18px]',
         loginSmall: '',
     };
 

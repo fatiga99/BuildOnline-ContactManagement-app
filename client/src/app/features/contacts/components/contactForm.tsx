@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '@/app/store';
 import { createNewContact, editContact, removeContact } from '../contactService';
+import BaseButton from "@/app/components/baseButton";
 
 interface ContactFormProps {
     contactId?: number; 
@@ -214,22 +215,24 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
           </div>
       
           <div className="col-span-1 md:col-span-2 flex justify-center space-x-4 mt-8">
-            <button
+            <BaseButton
               type="submit"
               disabled={isSubmitting}
-              className="w-[263px] h-[59px] bg-[#9378FF] px-6 py-2 rounded-full hover:bg-purple-600 transition-colors text-white"
+              variant="primary"
+              className="w-[263px] h-[59px] px-6 py-2"
             >
               SAVE
-            </button>
+            </BaseButton>
       
             {isEditMode && (
-              <button
+              <BaseButton
                 type="button"
                 onClick={handleDelete}
-                className="w-[263px] h-[59px] bg-[#FF7878] px-6 py-2 rounded-full hover:bg-red-600 transition-colors text-white"
+                variant="delete"
+                className="w-[263px] h-[59px]"
               >
                 DELETE
-              </button>
+              </BaseButton>
             )}
           </div>
         </form>
