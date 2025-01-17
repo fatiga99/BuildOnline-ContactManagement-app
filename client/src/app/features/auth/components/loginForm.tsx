@@ -9,6 +9,7 @@ import { loginSuccess } from '../authSlice';
 import Cookies from 'js-cookie';
 import { useFormik } from 'formik';
 import BaseButton from '@/app/components/baseButton';
+import BaseInput from '@/app/components/baseInput';
 
 const LoginForm: React.FC = () => {
     const router = useRouter();
@@ -43,25 +44,27 @@ const LoginForm: React.FC = () => {
             onSubmit={handleSubmit}
             className="flex flex-col items-center space-y-6 md:space-y-12 ">
                 <div className="max-w-[775px] flex flex-col w-full  mt-[38px] md:mt-20 text-[16px] font-public-sans text-[#99879D] leading-[18.8px]">
-                    <input
+                    <BaseInput
+                        variant='loginForm'
                         type="email"
                         name="email"
                         placeholder="john@doe.com"
                         value={values.email}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className="w-[343px] md:w-[775px] h-[56px] rounded-md bg-[#FBEEFF] backdrop-blur-[40px] p-4 focus:outline-none"
+                        className=""
                     />
                     {touched.email && errors.email && <div className="text-red-500 text-sm mt-[10px]">{errors.email}</div>}
 
-                    <input
+                    <BaseInput
+                        variant='loginForm'
                         type="password"
                         name="password"
-                        placeholder="john@doe.com"
+                        placeholder="password"
                         value={values.password}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        className="w-[343px] md:w-[775px] h-[56px] rounded-md bg-[#FBEEFF] backdrop-blur-[40px] p-4 mt-[30px] focus:outline- mb-[38px] md:mb-20"
+                        className="mt-[30px] mb-[38px] md:mb-20"
                     />
                     {touched.password && errors.password && <div className="text-red-500 text-sm mt-[10px]">{errors.password}</div>}
                 </div>

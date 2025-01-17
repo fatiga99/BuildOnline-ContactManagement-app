@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '@/app/store';
 import { createNewContact, editContact, removeContact } from '../contactService';
 import BaseButton from "@/app/components/baseButton";
+import BaseInput from "@/app/components/baseInput";
 
 interface ContactFormProps {
     contactId?: number; 
@@ -88,7 +89,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
                 throw new Error('No URL returned from Cloudinary');
             }
         } catch (error) {
-            console.error('Error Uploading Image to Cloudinary', error);
+            console.log(error);
             alert(isEditMode ? 'Edit failed' : 'Create failed');
         }
     };
@@ -113,13 +114,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
             <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">
               Name
             </label>
-            <input
+            <BaseInput
+              variant="contactForm"
               type="text"
               name="name"
               value={values.name}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
             />
             {touched.name && errors.name && <div className="text-red-500 text-sm">{errors.name}</div>}
           </div>
@@ -129,12 +130,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
               Profile Picture
             </label>
             <div className="relative">
-              <input
+              <BaseInput
+                variant="contactForm"
                 type="text"
                 name="profilePicture"
                 value={values.profilePicture ? "Image selected" : "Upload file"}
                 readOnly
-                className="p-2 pr-8 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans w-full"
+                className="pr-8 w-full"
               />
               <input
                 type="file"
@@ -167,13 +169,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
             <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">
               Address
             </label>
-            <input
+            <BaseInput
+              variant="contactForm"
               type="text"
               name="address"
               value={values.address}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
             />
             {touched.address && errors.address && (
               <div className="text-red-500 text-sm">{errors.address}</div>
@@ -184,13 +186,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
             <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">
               Phone
             </label>
-            <input
+            <BaseInput
+              variant="contactForm"
               type="text"
               name="phoneNumber"
               value={values.phoneNumber}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
             />
             {touched.phoneNumber && errors.phoneNumber && (
               <div className="text-red-500 text-sm">{errors.phoneNumber}</div>
@@ -201,13 +203,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
             <label className="text-[20px] font-redhat font-bold leading-[26.46px] text-[#000000]">
               Email
             </label>
-            <input
+            <BaseInput
+              variant="contactForm"
               type="email"
               name="email"
               value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              className="p-2 border rounded-[8px] bg-[#FBEEFF] h-[56px] focus:outline-none text-[16px] backdrop-blur-[40px] text-[#99879D] leading-[18.8px] font-public-sans"
             />
             {touched.email && errors.email && (
               <div className="text-red-500 text-sm">{errors.email}</div>
