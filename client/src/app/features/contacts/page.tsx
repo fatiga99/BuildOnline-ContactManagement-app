@@ -8,6 +8,7 @@ import ContactList from "./components/contactList";
 import { useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import { useRouter } from 'next/navigation';
+import BaseButton from "@/app/components/baseButton";
 
 const ContactsPage: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -42,12 +43,13 @@ const ContactsPage: React.FC = () => {
             <h1 className="text-[32px] md:text-[39px] font-black leading-tight text-[#120E21] w-auto font-redhat text-left">
                 Contacts
             </h1>
-            <button
+            <BaseButton
+                variant="primary"
                 onClick={handleCreateClick}
-                className="w-[117px] h-[49px] bg-[#9378FF] text-white rounded-[30px] px-4 py-1 hover:bg-purple-600 font-medium text-[16px] leading-[40px] font-sans"
+                className="w-[117px] h-[49px] rounded-[30px] px-4 py-1 text-[16px] leading-[40px] font-sans"
                 >
                 Create
-            </button>
+            </BaseButton>
             
         </div>
         <div 
