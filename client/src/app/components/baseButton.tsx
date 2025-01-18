@@ -1,9 +1,4 @@
-import { ButtonHTMLAttributes } from "react";
-
-interface BaseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'delete' | 'loginSmall' | 'Contacts'; 
-    className?: string; 
-}
+import { BaseButtonProps} from './interfaces/iBaseButtonProps'
 
 const BaseButton: React.FC<BaseButtonProps> = ({ variant = 'primary', className, children, ...props }) => {
     const baseStyles = 'rounded-[60px] transition-colors font-public-sans font-medium ';

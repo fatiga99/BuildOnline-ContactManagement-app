@@ -1,9 +1,4 @@
-import { InputHTMLAttributes } from "react";
-
-interface BaseInputProps extends InputHTMLAttributes<HTMLInputElement> {
-    variant?: 'loginForm' | 'contactForm' ; 
-    className?: string; 
-}
+import { BaseInputProps } from "./interfaces/iBaseInputProps";
 
 const BaseInput: React.FC<BaseInputProps> = ({ variant = 'loginForm', className, children, ...props }) => {
     const baseStyles = 'h-[56px] bg-[#FBEEFF] backdrop-blur-[40px] focus:outline-none';

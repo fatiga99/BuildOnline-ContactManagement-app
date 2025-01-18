@@ -1,10 +1,7 @@
-import React, { SVGAttributes } from "react";
+import { ContactArrowProps } from './interfaces/iContactArrowProps';
 
-interface IconProps extends SVGAttributes<SVGSVGElement> {
-    className?: string; 
-}
 
-const ContactArrowSvg: React.FC<IconProps> = ({ className, ...props }) => {
+const ContactArrowSvg: React.FC<ContactArrowProps> = ({ className, ...props }) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
