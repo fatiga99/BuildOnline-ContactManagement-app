@@ -2,6 +2,7 @@ import React from 'react';
 import { Contact } from '../interfaces/icontact';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import ContactArrowSvg from '@/app/components/contactArrowSvg';
 
 interface ContactItemProps {
     contact: Contact;
@@ -45,16 +46,7 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact }) => {
                 className="ml-auto mr-[26.22px] mt-[38px] bg-[#FBEEFF] rounded-full flex items-center justify-center"
                 style={{ width: '24px', height: '24px' }}
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="3"
-                    stroke="currentColor"
-                    className="w-4 h-6 text-black"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
+                <ContactArrowSvg className="w-4 h-6 text-black" />
             </div>
         </div>
     );
