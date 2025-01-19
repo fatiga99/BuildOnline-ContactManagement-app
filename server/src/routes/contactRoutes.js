@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const contactRepository_1 = require("../repositories/contactRepository");
+const authMiddleware_1 = require("../middleware/authMiddleware");
+const contactValidator_1 = require("../middleware/contactValidator");
+const contactController_1 = require("../controllers/contactController");
+const contactService_1 = require("../services/contactService");
+const contactRouter = express_1.default.Router();
+const contactRepository = new contactRepository_1.ContactRepository();
+const contactService = new contactService_1.ContactService(contactRepository);
+const contactController = new contactController_1.ContactController(contactService);
+contactRouter.use(authMiddleware_1.authMiddleware);
+contactRouter.get('/', contactController.getContacts.bind(contactController));
+contactRouter.post('/', contactValidator_1.validateContact, contactController.createContact.bind(contactController));
+contactRouter.put('/:contactId', contactValidator_1.validateContact, contactController.updateContact.bind(contactController));
+contactRouter.delete('/:contactId', contactController.deleteContact.bind(contactController));
+exports.default = contactRouter;

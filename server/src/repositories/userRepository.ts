@@ -1,49 +1,40 @@
-import { ResultSetHeader, RowDataPacket } from "mysql2";
+import { PrismaClient } from "@prisma/client";
+import { user as User } from "@prisma/client";
 import { IUserRepository } from "../interfaces/IUserRepository";
-import pool from "..";
 import { CustomError } from "../utils/customError";
 
-export class UserRepository implements IUserRepository {
-    public async getUserById(id: number): Promise<RowDataPacket> {
-        const [userRecords] = await pool.query<RowDataPacket[]>(
-            `SELECT * 
-             FROM user 
-             WHERE id = ?`, 
-            [id]
-        );
+const prisma = new PrismaClient();
 
-        if (userRecords.length === 0) {
-            throw new CustomError('User not found', 404);
+export class UserRepository implements IUserRepository {
+    public async getUserById(id: number): Promise<User> {
+        const user = await prisma.user.findUnique({
+            where: { id },
+        });
+
+        if (!user) {
+            throw new CustomError("User not found", 404);
         }
 
-        return userRecords[0];
+        return user;
     }
 
-    public async getUserByEmail(email: string): Promise<RowDataPacket> {
-        const [userRecords] = await pool.query<RowDataPacket[]>(
-            `SELECT * 
-             FROM user 
-             WHERE email = ?`, 
-            [email]
-        );
+    public async getUserByEmail(email: string): Promise<User> {
+        const user = await prisma.user.findUnique({
+            where: { email },
+        });
 
-        if (userRecords.length === 0) {
-            throw new CustomError('User not found', 404);
+        if (!user) {
+            throw new CustomError("User not found", 404);
         }
 
-        return userRecords[0];
+        return user;
     }
 
     public async createUser(email: string, password: string): Promise<number> {
-        const query = `
-            INSERT INTO user (email, password) 
-            VALUES (?, ?)
-        `;
-        const values = [email, password];
+        const user = await prisma.user.create({
+            data: { email, password },
+        });
 
-        const [result] = await pool.query<ResultSetHeader>(query, values);
-
-        return result.insertId; 
-
+        return user.id;
     }
 }

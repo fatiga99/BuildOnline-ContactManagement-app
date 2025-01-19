@@ -4,6 +4,6 @@ export interface ContactDTO {
     email: string;
     phoneNumber: string;
     address: string;
-    profilePicture: string | Buffer; 
+    profilePicture:  Uint8Array | null; 
     userId: number;
 }

@@ -4,7 +4,7 @@ import { CreateContactDTO} from '../interfaces/DTOs/createContactDTO';
 import { ContactWithBase64DTO} from '../interfaces/DTOs/contactWithBase64DTO';
 import { ContactDTO } from '../interfaces/DTOs/contactDTO';
 import { CustomError } from '../utils/customError';
-import { Contact } from '../models/contact';
+import { contact as Contact } from "@prisma/client";
 import axios from 'axios';
 import cloudinary from '../../cloudinaryConfig';
 import { ContactUpdateDTO } from '../interfaces/DTOs/contactUpdateDTO';
@@ -15,7 +15,6 @@ export class ContactController {
     constructor(contactService: ContactService) {
         this.contactService = contactService;
     }
-
 
 
     public async getContacts(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -79,15 +78,19 @@ export class ContactController {
     private convertContactsToBase64(contacts: Contact[]): ContactWithBase64DTO[] {
         return contacts.map(contact => {
             const profilePictureBase64 = contact.profilePicture
-                ? `data:image/jpeg;base64,${contact.profilePicture.toString('base64')}`
+                ? `data:image/jpeg;base64,${Buffer.from(contact.profilePicture).toString("base64")}` 
                 : null;
-
+    
             return {
                 ...contact,
-                profilePicture: profilePictureBase64
+                profilePicture: profilePictureBase64,
             };
         });
     }
+    
+    
+
+    
 
     
 

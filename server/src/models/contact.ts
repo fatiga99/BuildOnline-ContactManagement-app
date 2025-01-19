@@ -4,7 +4,7 @@ export class Contact {
     public email: string;
     public phoneNumber: string;
     public address: string;
-    public profilePicture: Buffer;
+    public profilePicture: Uint8Array | null;
     public userId: number;
   
     constructor(
@@ -13,7 +13,7 @@ export class Contact {
       email: string,
       phoneNumber: string,
       address: string,
-      profilePicture: Buffer,
+      profilePicture: Uint8Array,
       userId: number
     ) {
       this.id = id;

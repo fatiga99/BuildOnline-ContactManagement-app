@@ -1,9 +1,9 @@
-import { IContactRepository } from '../interfaces/IContactRepository';
-import { Contact } from '../models/contact';
-import { CustomError } from '../utils/customError';
-import { CreateContactDTO } from '../interfaces/DTOs/createContactDTO';
-import { ContactDTO } from '../interfaces/DTOs/contactDTO';
-import axios from 'axios';
+import { contact as Contact } from "@prisma/client";
+import { IContactRepository } from "../interfaces/IContactRepository";
+import { CustomError } from "../utils/customError";
+import { CreateContactDTO } from "../interfaces/DTOs/createContactDTO";
+import { ContactDTO } from "../interfaces/DTOs/contactDTO";
+import axios from "axios";
 
 export class ContactService {
     private contactRepository: IContactRepository;
@@ -13,86 +13,63 @@ export class ContactService {
     }
 
     public async getContactsByUserId(userId: number): Promise<Contact[]> {
-        const contactsData = await this.contactRepository.getContactsByUserId(userId);
-
-        return contactsData.map(data => new Contact(
-            data.id,
-            data.name,
-            data.email,
-            data.phoneNumber,
-            data.address,
-            data.profilePicture,
-            data.userId
-        ));
+        return await this.contactRepository.getContactsByUserId(userId);
     }
 
     public async createContact(contactData: CreateContactDTO): Promise<Contact> {
-        if (typeof contactData.profilePicture === 'string') {
-            contactData.profilePicture = await this.processProfilePicture(contactData.profilePicture);
-        }
-    
-        const newContact = new Contact(
-            0,
-            contactData.name,
-            contactData.email,
-            contactData.phoneNumber,
-            contactData.address,
-            contactData.profilePicture as Buffer,
-            contactData.userId
-        );
-    
-        const createdContactId = await this.contactRepository.createContact(newContact);
-        
-        newContact.id = createdContactId;
-    
-        return newContact;
+        contactData.profilePicture = await this.normalizeProfilePicture(contactData.profilePicture);
+
+        const createdContactId = await this.contactRepository.createContact(contactData);
+
+        return {
+            ...contactData,
+            id: createdContactId,
+        };
     }
-    
 
     public async updateContact(contactData: ContactDTO): Promise<Contact> {
         const existingContact = await this.contactRepository.getContactById(contactData.id);
 
         if (!existingContact || existingContact.userId !== contactData.userId) {
-            throw new CustomError('Unauthorized or contact not found', 403);
+            throw new CustomError("Unauthorized or contact not found", 403);
         }
 
-        if (typeof contactData.profilePicture === 'string') {
-            contactData.profilePicture = await this.processProfilePicture(contactData.profilePicture);
-        }
+        contactData.profilePicture = await this.normalizeProfilePicture(contactData.profilePicture);
 
-        const updatedContact = new Contact(
-            contactData.id,
-            contactData.name,
-            contactData.email,
-            contactData.phoneNumber,
-            contactData.address,
-            contactData.profilePicture as Buffer,
-            contactData.userId
-        );
+        await this.contactRepository.updateContact(contactData as Contact);
 
-        await this.contactRepository.updateContact(updatedContact);
-
-        return updatedContact;
+        return contactData as Contact;
     }
 
     public async deleteContact(contactId: number): Promise<void> {
         const contact = await this.contactRepository.getContactById(contactId);
 
         if (!contact) {
-            throw new CustomError('Contact not found', 404);
+            throw new CustomError("Contact not found", 404);
         }
 
         await this.contactRepository.deleteContact(contactId);
     }
 
-    private async processProfilePicture(profilePicture: string): Promise<Buffer> {
+    private async downloadAndConvertProfilePicture(profilePicture: string): Promise<Uint8Array> {
         try {
-            const response = await axios.get(profilePicture, { responseType: 'arraybuffer' });
-            const profilePictureBuffer = Buffer.from(response.data); 
-            return profilePictureBuffer;
-        } 
-        catch (error) {
-            throw new CustomError('Error downloading image from Cloudinary', 500);
+            const response = await axios.get(profilePicture, { responseType: "arraybuffer" });
+            const responseUnit8Array =  new Uint8Array(response.data); 
+            return responseUnit8Array;
+        } catch (error) {
+            throw new CustomError("Error downloading image from Cloudinary", 500);
         }
+    }
+
+    private async normalizeProfilePicture(profilePicture: string | Buffer | Uint8Array | null): Promise<Uint8Array | null> {
+        if (typeof profilePicture === "string") {
+            return await this.downloadAndConvertProfilePicture(profilePicture);
+        }
+
+        if (profilePicture instanceof Buffer) {
+            return new Uint8Array(profilePicture);
+        }
+
+        return profilePicture;
     }
 }

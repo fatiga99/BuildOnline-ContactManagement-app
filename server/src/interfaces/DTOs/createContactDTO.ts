@@ -3,6 +3,6 @@ export interface CreateContactDTO {
     email: string;
     phoneNumber: string;
     address: string;
-    profilePicture: Buffer; 
+    profilePicture: Uint8Array | null; 
     userId: number;
 }
