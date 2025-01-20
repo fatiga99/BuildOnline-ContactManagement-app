@@ -41,19 +41,20 @@ const phoneNumberValidation = () => Joi.string()
         'any.required': contactValidationMessages.phoneNumber.required
     });
 
-    const profilePictureValidation = () => Joi.alternatives()
-    .try(
-        Joi.string().uri().messages({
-            'string.uri': 'Profile picture must be a valid URL'
-        }),
-        Joi.binary().messages({
-            'binary.base': 'Profile picture must be a valid binary file'
-        })
-    )
-    .required()
-    .messages({
-        'any.required': 'Profile picture is required'
-    });
+const profilePictureValidation = () => Joi.alternatives()
+.try(
+    Joi.string().uri().messages({
+        'string.uri': 'Profile picture must be a valid URL'
+    }),
+    Joi.binary().messages({
+        'binary.base': 'Profile picture must be a valid binary file'
+    })
+)
+.required()
+.messages({
+    'any.required': 'Profile picture is required'
+});
+
 
 
 
@@ -73,12 +74,18 @@ export const contactSchema = Joi.object({
 });
 
 export const validateContact = (req: Request, res: Response, next: NextFunction): void => {
-    const { error } = contactSchema.validate(req.body, { abortEarly: false });
+    const combinedData = {
+        ...req.body,
+        profilePicture: req.file ? req.file.buffer : undefined, 
+    };
+
+    const { error } = contactSchema.validate(combinedData, { abortEarly: false });
+
     if (error) {
         console.error('Validation error:', error.details.map((d) => d.message));
         res.status(400).json({ errors: error.details.map(detail => detail.message) });
         return;
     }
+
     next();
-    return;
 };

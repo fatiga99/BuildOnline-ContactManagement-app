@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '@/app/store';
 import axiosInstance from '@/utils/axiosConfig';
-import { Contact } from './interfaces/icontact';
 import { handleAxiosError } from '@/utils/axiosErrorHandler';
 
 export const fetchContacts = createAsyncThunk(
@@ -28,49 +27,52 @@ export const fetchContacts = createAsyncThunk(
 );
 
 export const createNewContact = createAsyncThunk(
-    'contacts/createContact',
-    async (contactData: Omit<Contact, 'id'>, thunkAPI) => {
-        const state = thunkAPI.getState() as RootState;
-        const token = state.auth.token;
-
-        if (!token) {
-            return thunkAPI.rejectWithValue('No token available');
-        }
-
-        try {
-            const response = await axiosInstance.post('/api/contacts', contactData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            return response.data;
-        } catch (error) {
-            return thunkAPI.rejectWithValue(handleAxiosError(error));
-        }
+    "contacts/createContact",
+    async (formData: FormData, thunkAPI) => {
+      const state = thunkAPI.getState() as RootState;
+      const token = state.auth.token;
+  
+      if (!token) {
+        return thunkAPI.rejectWithValue("No token available");
+      }
+  
+      try {
+        const response = await axiosInstance.post("/api/contacts", formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        return response.data;
+      } catch (error) {
+        return thunkAPI.rejectWithValue(handleAxiosError(error));
+      }
     }
-);
-
-export const editContact = createAsyncThunk(
-    'contacts/updateContact',
-    async ({ contactId, contactData }: { contactId: number; contactData: Omit<Contact, 'id'> }, thunkAPI) => {
-        const state = thunkAPI.getState() as RootState;
-        const token = state.auth.token;
-
-        if (!token) {
-            return thunkAPI.rejectWithValue('No token available');
-        }
-        try {
-            const response = await axiosInstance.put(`/api/contacts/${contactId}`, contactData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            return response.data;
-        } catch (error) {
-            return thunkAPI.rejectWithValue(handleAxiosError(error));
-        }
+  );
+  
+  export const editContact = createAsyncThunk(
+    "contacts/updateContact",
+    async ({ contactId, formData }: { contactId: number; formData: FormData }, thunkAPI) => {
+      const state = thunkAPI.getState() as RootState;
+      const token = state.auth.token;
+  
+      if (!token) {
+        return thunkAPI.rejectWithValue("No token available");
+      }
+  
+      try {
+        const response = await axiosInstance.put(`/api/contacts/${contactId}`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        return thunkAPI.rejectWithValue(handleAxiosError(error));
+      }
     }
-);
+  );
+  
 
 export const removeContact = createAsyncThunk(
     'contacts/deleteContact',

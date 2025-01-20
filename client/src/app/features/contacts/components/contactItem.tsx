@@ -12,9 +12,11 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact }) => {
     const router = useRouter();
     
     const profilePictureSrc = 
-        typeof contact.profilePicture === 'string' && contact.profilePicture
+        contact.profilePicture && typeof contact.profilePicture === 'string'
             ? contact.profilePicture
             : '/Imgs/default-avatar.png';
+
+
 
     const handleClick = () => {
         router.push(`/features/contacts/${contact.id}`);
