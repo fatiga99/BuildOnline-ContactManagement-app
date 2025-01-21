@@ -4,6 +4,7 @@ import { CustomError } from "../utils/customError";
 import { CreateContactDTO } from "../interfaces/DTOs/createContactDTO";
 import { ContactDTO } from "../interfaces/DTOs/contactDTO";
 import axios from "axios";
+import { PaginationParameters } from "../interfaces/iPaginationParameters";
 
 export class ContactService {
     private contactRepository: IContactRepository;
@@ -12,10 +13,22 @@ export class ContactService {
         this.contactRepository = contactRepository;
     }
 
-    public async getContactsByUserId(userId: number): Promise<Contact[]> {
-        return await this.contactRepository.getContactsByUserId(userId);
+    public async getContactsByUserIdWithPagination(
+        parameters: PaginationParameters
+    ): Promise<{ data: Contact[]; total: number; currentPage: number; totalPages: number }> {
+        const { userId, searchTerm, page, limit } = parameters;
+    
+        const { data, total } = await this.contactRepository.getContactsByUserIdWithPagination(parameters);
+    
+        return {
+            data,
+            total,
+            currentPage: page,
+            totalPages: Math.ceil(total / limit),
+        };
     }
-
+    
+    
     public async createContact(contactData: CreateContactDTO): Promise<Contact> {
         contactData.profilePicture = await this.normalizeProfilePicture(contactData.profilePicture);
 

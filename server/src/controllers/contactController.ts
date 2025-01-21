@@ -9,6 +9,8 @@ import upload from '../../multerConfig';
 import axios from 'axios';
 import cloudinary from '../../cloudinaryConfig';
 import { ContactUpdateDTO } from '../interfaces/DTOs/contactUpdateDTO';
+import { parsePaginationParams } from '../utils/parsePaginationParams';
+
 
 export class ContactController {
     private contactService: ContactService;
@@ -17,19 +19,27 @@ export class ContactController {
         this.contactService = contactService;
     }
 
-
     public async getContacts(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userId = req.user?.id;
             if (!userId) return next(new CustomError('User ID is missing', 400));
 
-            const contacts = await this.contactService.getContactsByUserId(userId);
+            const { search, page, limit } = parsePaginationParams(req.query);
 
-            const contactsWithBase64Images = this.convertContactsToBase64(contacts);
-    
-            res.json(contactsWithBase64Images);
-        } 
-        catch (error) {
+            const result = await this.contactService.getContactsByUserIdWithPagination({
+                userId,
+                searchTerm: search,
+                page,
+                limit,
+            });
+
+            const contactsWithBase64Images = this.convertContactsToBase64(result.data);
+
+            res.status(200).json({
+                ...result,
+                data: contactsWithBase64Images, 
+            });
+        } catch (error) {
             next(error);
         }
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginPage from '../app/login/page';
+import LoginPage from './auth/login/page';
 
 export default function Home() {
     return <LoginPage />;

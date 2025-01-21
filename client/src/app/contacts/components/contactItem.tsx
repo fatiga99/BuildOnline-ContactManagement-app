@@ -19,7 +19,7 @@ const ContactItem: React.FC<ContactItemProps> = ({ contact }) => {
 
 
     const handleClick = () => {
-        router.push(`/features/contacts/${contact.id}`);
+        router.push(`/contacts/${contact.id}`);
     };
 
     return (

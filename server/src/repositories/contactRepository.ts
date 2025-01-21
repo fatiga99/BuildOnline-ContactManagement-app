@@ -1,16 +1,47 @@
 import { PrismaClient, contact as Contact } from "@prisma/client";
 import { IContactRepository } from "../interfaces/IContactRepository";
 import { CustomError } from "../utils/customError";
+import { PaginationParameters } from "../interfaces/iPaginationParameters";
 
 const prisma = new PrismaClient();
 
 export class ContactRepository implements IContactRepository {
-    public async getContactsByUserId(userId: number): Promise<Contact[]> {
-        const userContacts = await prisma.contact.findMany({
-            where: { userId },
+
+    public async getContactsByUserIdWithPagination(
+        parameters: PaginationParameters
+    ): Promise<{ data: Contact[]; total: number }> {
+        const { userId, searchTerm, page, limit } = parameters;
+        const offset = (page - 1) * limit;
+
+        const data = await prisma.contact.findMany({
+            where: {
+                userId,
+                name: {
+                    contains: searchTerm,
+                },
+            },
+            skip: offset,
+            take: limit,
         });
-        return userContacts; 
+
+        const total = await this.getContactsCount({ userId, searchTerm });
+
+        return { data, total };
     }
+
+    public async getContactsCount(parameters: { userId: number; searchTerm: string }): Promise<number> {
+        const { userId, searchTerm } = parameters;
+
+        return await prisma.contact.count({
+            where: {
+                userId,
+                name: {
+                    contains: searchTerm,
+                },
+            },
+        });
+    }
+
 
     public async getContactById(contactId: number): Promise<Contact | null> {
         const contact = await prisma.contact.findUnique({

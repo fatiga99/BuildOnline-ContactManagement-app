@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(req: NextRequest) {
-    const loginUrl = new URL('/login', req.url);
+    const loginUrl = new URL('/auth/login', req.url);
     const token = req.cookies.get('token')?.value;
 
-    if (req.nextUrl.pathname === '/login') {
+    if (req.nextUrl.pathname === '/auth/login') {
         return NextResponse.next();
     }
 
@@ -17,9 +17,9 @@ export function middleware(req: NextRequest) {
 
 export const config = {
     matcher: [
-        '/features/contacts',
-        '/features/contacts/create',
-        '/features/contacts/:id',
-        '/features/contacts/:id/edit',
+        '/contacts',
+        '/contacts/create',
+        '/contacts/:id',
+        '/contacts/:id/edit',
     ],
 };

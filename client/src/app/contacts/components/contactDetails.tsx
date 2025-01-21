@@ -21,7 +21,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ contactId }) => {
     }
 
     const handleEdit = () => {
-        router.push(`/features/contacts/${contact.id}/edit`);
+        router.push(`/contacts/${contact.id}/edit`);
     };
 
     return (

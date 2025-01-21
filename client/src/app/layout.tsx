@@ -56,7 +56,7 @@ export default function RootLayout({
             <div className="flex items-center ">
               <BaseButton
                 variant="loginSmall"
-                onClick={() => router.push("/login")}
+                onClick={() => router.push("/auth/login")}
               >
                 Log In
               </BaseButton>

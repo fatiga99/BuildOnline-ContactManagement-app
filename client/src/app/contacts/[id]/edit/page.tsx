@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import ContactForm from "@/app/features/contacts/components/contactForm";
 import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import Image from "next/image";
+import ContactForm from "../../components/contactForm";
 
 const EditContactPage: React.FC = () => {
   const params = useParams();

@@ -62,7 +62,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
           else {
             await dispatch(createNewContact(formData)); 
           }
-          router.push("/features/contacts");
+          router.push("/contacts");
         } catch (error) {
           console.error(isEditMode ? "Edit failed" : "Create failed", error);
         }
@@ -85,7 +85,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ contactId }) => {
     if (!contactId) return;
     try {
       await dispatch(removeContact(contactId));
-      router.push("/features/contacts");
+      router.push("/contacts");
     } catch (error) {
       console.error("Error deleting contact", error);
     }

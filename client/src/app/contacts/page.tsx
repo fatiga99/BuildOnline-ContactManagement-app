@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../../store";
 import { fetchContacts } from "./contactService";
 import ContactList from "./components/contactList";
 import BaseButton from "@/app/components/baseButton";
 import { useRouter } from 'next/navigation';
+import { AppDispatch, RootState } from "../store";
 
 const ContactsPage: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -34,7 +34,7 @@ const ContactsPage: React.FC = () => {
     };
 
     const handleCreateClick = () => {
-        router.push("/features/contacts/create");
+        router.push("/contacts/create");
     };
 
     return (
