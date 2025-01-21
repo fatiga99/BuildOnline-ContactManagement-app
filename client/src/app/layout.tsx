@@ -47,7 +47,7 @@ export default function RootLayout({
             <div className="flex items-center">
               <BaseButton
                 variant="Contacts"
-                onClick={() => router.push("/features/contacts")}
+                onClick={() => router.push("/contacts")}
               >
                 Contacts
               </BaseButton>
