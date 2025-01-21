@@ -1,16 +1,15 @@
-import { createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Contact } from './interfaces/icontact';
 import { ContactsState } from './interfaces/icontactsState';
 import { fetchContacts, createNewContact, editContact, removeContact } from './contactService';
-
 
 const initialState: ContactsState = {
     contacts: [],
     loading: false,
     error: null,
+    totalPages: 0,
+    currentPage: 1,
 };
-
-
 
 const contactsSlice = createSlice({
     name: 'contacts',
@@ -38,9 +37,11 @@ const contactsSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchContacts.fulfilled, (state, action: PayloadAction<Contact[]>) => {
+            .addCase(fetchContacts.fulfilled, (state, action) => {
                 state.loading = false;
-                state.contacts = action.payload;
+                state.contacts = action.payload.data;
+                state.totalPages = action.payload.totalPages;
+                state.currentPage = action.payload.currentPage;
             })
             .addCase(fetchContacts.rejected, (state, action) => {
                 state.loading = false;

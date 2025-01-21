@@ -4,26 +4,34 @@ import axiosInstance from '@/utils/axiosConfig';
 import { handleAxiosError } from '@/utils/axiosErrorHandler';
 
 export const fetchContacts = createAsyncThunk(
-    'contacts/fetchContacts',
-    async (_, thunkAPI) => {
-        const state = thunkAPI.getState() as RootState;
-        const token = state.auth.token;
+  'contacts/fetchContacts',
+  async (
+      { searchTerm = '', page = 1, limit = 10 }: { searchTerm?: string; page?: number; limit?: number },
+      thunkAPI
+  ) => {
+      const state = thunkAPI.getState() as RootState;
+      const token = state.auth.token;
 
-        if (!token) {
-            return thunkAPI.rejectWithValue('No token available');
-        }
+      if (!token) {
+          return thunkAPI.rejectWithValue('No token available');
+      }
 
-        try {
-            const response = await axiosInstance.get('/api/contacts', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            return response.data;
-        } catch (error) {
-            return thunkAPI.rejectWithValue(handleAxiosError(error));
-        }
-    }
+      try {
+          const response = await axiosInstance.get('/api/contacts', {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+              params: {
+                  search: searchTerm,
+                  page,
+                  limit,
+              },
+          });
+          return response.data; 
+      } catch (error) {
+          return thunkAPI.rejectWithValue(handleAxiosError(error));
+      }
+  }
 );
 
 export const createNewContact = createAsyncThunk(
